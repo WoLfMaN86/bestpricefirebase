@@ -152,16 +152,26 @@
   </div>
 </template>
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 import EditarProducto from "./BlancasEditar.vue";
 import { useRouter } from "vue-router";
 import tiendas from "@/assets/tiendas.json";
 import tiendasOnline from "@/assets/tiendasOnline.json";
 
+import { db } from "@/firebase.js";
+import { ref, onValue } from "firebase/database";
+
 export default defineComponent({
   components: { EditarProducto },
   data() {
+    const fetchData = () => {
+    const dataRef = ref(db, "path/to/data");
+    onValue(dataRef, (snapshot) => {
+      this.productosStore.$patch({ productos: snapshot.val() });
+    });
+  };
+  onMounted(fetchData);
     return {
       productosStore: usaBlancasStore(),
       editandoProducto: false,
@@ -252,7 +262,7 @@ export default defineComponent({
     irABlancas() {
       this.router.push("/blancas/add");
     },
-   
+    
   },
 });
 </script>
