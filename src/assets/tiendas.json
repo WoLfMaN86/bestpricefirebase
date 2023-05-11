@@ -1,0 +1,23 @@
+[
+  {
+    "codTienda": "1001",
+    "nombre": "MercaDonDon",
+    "direccion": "Calle falsa 123",
+    "telefono": "983456666",
+    "codPostal": "47004"
+  },
+  {
+    "codTienda": "1002",
+    "nombre": "La tienda de Infa",
+    "direccion": "Calle se siempre 66",
+    "telefono": "983456656",
+    "codPostal": "47004"
+  },
+  {
+    "codTienda": "1003",
+    "nombre": "El Alidepende es mejor",
+    "direccion": "Plaza del tuso 888",
+    "telefono": "983422256",
+    "codPostal": "47003"
+  }
+]

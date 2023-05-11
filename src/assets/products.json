@@ -1,0 +1,47 @@
+[
+    {
+        "nombre": "Aceite Oliva",
+        "marca": "Carbonell",
+        "peso": "1000",
+        "precio": 1.5,
+        "barras": "8400000000001",
+        "imagen": "/imagenes/oliva.jpg",
+        "categoria": "Aceite"
+      },
+      {
+        "nombre": "Arroz",
+        "marca": "SOS",
+        "peso": "1000",
+        "precio": 2.5,
+        "barras": "8400000000002",
+        "imagen": "/imagenes/arroz.jpg",
+        "categoria": "Arroz"
+      },
+      {
+        "nombre": "Aceite Girasol",
+        "marca": "Koipe",
+        "peso": "1000",
+        "precio": 3.2,
+        "barras": "8400000000003",
+        "imagen": "/imagenes/girasol.jpg",
+        "categoria": "Aceite"
+      },
+      {
+        "nombre": "Leche Entera",
+        "marca": "La Asturiana",
+        "peso": "1000",
+        "precio": 1.8,
+        "barras": "8400000000004",
+        "imagen": "/imagenes/leche.jpg",
+        "categoria": "Leche"
+      },
+      {
+        "nombre": "Pan de molde",
+        "marca": "Bimbo",
+        "peso": "500",
+        "precio": 7.5,
+        "barras": "8400000000005",
+        "imagen": "/imagenes/bimbo.jpg",
+        "categoria": "Pan"
+      }
+  ]

@@ -1,0 +1,268 @@
+[
+  {
+    "nombre": "Aceite Oliva",
+    "marca": "LaHacienda",
+    "peso": "1000",
+    "precio": 1.0,
+    "barras": "8455000000009",
+    "imagen": "/imagenes/oliva.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000001",
+    "codTienda": "1001"
+  },
+  {
+    "nombre": "Arroz",
+    "marca": "LaHacienda",
+    "peso": "1000",
+    "precio": 1.5,
+    "barras": "8488003400088",
+    "imagen": "/imagenes/arroz.jpg",
+    "categoria": "Arroz",
+    "barrasOriginal": "8400000000002",
+    "codTienda": "1001"
+  },
+  {
+    "nombre": "Aceite Girasol",
+    "marca": "LaHacienda",
+    "peso": "1000",
+    "precio": 3.0,
+    "barras": "8454003400003",
+    "imagen": "/imagenes/girasol.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000003",
+    "codTienda": "1001"
+  },
+  {
+    "nombre": "Leche Entera",
+    "marca": "LaHacienda",
+    "peso": "1000",
+    "precio": 2.8,
+    "barras": "8400034004445",
+    "imagen": "/imagenes/leche.jpg",
+    "categoria": "Leche",
+    "barrasOriginal": "8400000000004",
+    "codTienda": "1001"
+  },
+  {
+    "nombre": "Pan de molde",
+    "marca": "LaHacienda",
+    "peso": "650",
+    "precio": 5.5,
+    "barras": "8403400001236",
+    "imagen": "/imagenes/bimbo.jpg",
+    "categoria": "Pan",
+    "barrasOriginal": "8400000000005",
+    "codTienda": "1001"
+  },
+
+  {
+    "nombre": "Aceite Oliva",
+    "marca": "Infa",
+    "peso": "1000",
+    "precio": 0.9,
+    "barras": "8445000000049",
+    "imagen": "/imagenes/oliva.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000001",
+    "codTienda": "1002"
+  },
+  {
+    "nombre": "Arroz",
+    "marca": "Infa",
+    "peso": "1000",
+    "precio": 1.3,
+    "barras": "8488770000078",
+    "imagen": "/imagenes/arroz.jpg",
+    "categoria": "Arroz",
+    "barrasOriginal": "8400000000002",
+    "codTienda": "1002"
+  },
+  {
+    "nombre": "Aceite Oliva",
+    "marca": "Alidepende",
+    "peso": "2000",
+    "precio": 4.0,
+    "barras": "8444000000002",
+    "imagen": "/imagenes/oliva.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000001",
+    "codTienda": "1003"
+  },
+  {
+    "nombre": "Arroz",
+    "marca": "Alidepende",
+    "peso": "1500",
+    "precio": 1.0,
+    "barras": "8487560000081",
+    "imagen": "/imagenes/arroz.jpg",
+    "categoria": "Arroz",
+    "barrasOriginal": "8400000000002",
+    "codTienda": "1003"
+  },
+  {
+    "nombre": "Aceite Girasol",
+    "marca": "Alidepende",
+    "peso": "1000",
+    "precio": 3.0,
+    "barras": "8445000000003",
+    "imagen": "/imagenes/girasol.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000003",
+    "codTienda": "1003"
+  },
+  {
+    "nombre": "Leche Entera",
+    "marca": "Alidepende",
+    "peso": "1000",
+    "precio": 2.8,
+    "barras": "8400000004444",
+    "imagen": "/imagenes/leche.jpg",
+    "categoria": "Leche",
+    "barrasOriginal": "8400000000004",
+    "codTienda": "1003"
+  },
+  {
+    "nombre": "Pan de molde",
+    "marca": "Alidepende",
+    "peso": "650",
+    "precio": 5.5,
+    "barras": "8400000001235",
+    "imagen": "/imagenes/bimbo.jpg",
+    "categoria": "Pan",
+    "barrasOriginal": "8400000000005",
+    "codTienda": "1003"
+  },
+  {
+    "nombre": "Aceite Oliva",
+    "marca": "Dia",
+    "peso": "1000",
+    "precio": 1.4,
+    "barras": "8455007000009",
+    "imagen": "/imagenes/oliva.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000001",
+    "codTienda": "5001"
+  },
+  {
+    "nombre": "Arroz",
+    "marca": "Dia",
+    "peso": "1000",
+    "precio": 1.2,
+    "barras": "8488073400088",
+    "imagen": "/imagenes/arroz.jpg",
+    "categoria": "Arroz",
+    "barrasOriginal": "8400000000002",
+    "codTienda": "5001"
+  },
+  {
+    "nombre": "Aceite Girasol",
+    "marca": "Dia",
+    "peso": "1000",
+    "precio": 3.2,
+    "barras": "8454073400003",
+    "imagen": "/imagenes/girasol.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000003",
+    "codTienda": "5001"
+  },
+  {
+    "nombre": "Leche Entera",
+    "marca": "Dia",
+    "peso": "1000",
+    "precio": 2.4,
+    "barras": "8400734004445",
+    "imagen": "/imagenes/leche.jpg",
+    "categoria": "Leche",
+    "barrasOriginal": "8400000000004",
+    "codTienda": "5001"
+  },
+  {
+    "nombre": "Pan de molde",
+    "marca": "Dia",
+    "peso": "650",
+    "precio": 5.0,
+    "barras": "8403470001236",
+    "imagen": "/imagenes/bimbo.jpg",
+    "categoria": "Pan",
+    "barrasOriginal": "8400000000005",
+    "codTienda": "5001"
+  },
+
+  {
+    "nombre": "Aceite Oliva",
+    "marca": "Carrefour",
+    "peso": "1000",
+    "precio": 1.9,
+    "barras": "8445008000049",
+    "imagen": "/imagenes/oliva.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000001",
+    "codTienda": "5002"
+  },
+  {
+    "nombre": "Arroz",
+    "marca": "Carrefour",
+    "peso": "1000",
+    "precio": 1.85,
+    "barras": "8488770800078",
+    "imagen": "/imagenes/arroz.jpg",
+    "categoria": "Arroz",
+    "barrasOriginal": "8400000000002",
+    "codTienda": "5002"
+  },
+  {
+    "nombre": "Aceite Oliva",
+    "marca": "Alcampo",
+    "peso": "1500",
+    "precio": 3.0,
+    "barras": "8444005000002",
+    "imagen": "/imagenes/oliva.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000001",
+    "codTienda": "5003"
+  },
+  {
+    "nombre": "Arroz",
+    "marca": "Alcampo",
+    "peso": "1500",
+    "precio": 1.3,
+    "barras": "8487565000081",
+    "imagen": "/imagenes/arroz.jpg",
+    "categoria": "Arroz",
+    "barrasOriginal": "8400000000002",
+    "codTienda": "5003"
+  },
+  {
+    "nombre": "Aceite Girasol",
+    "marca": "Alcampo",
+    "peso": "1000",
+    "precio": 3.4,
+    "barras": "8445050000003",
+    "imagen": "/imagenes/girasol.jpg",
+    "categoria": "Aceite",
+    "barrasOriginal": "8400000000003",
+    "codTienda": "5003"
+  },
+  {
+    "nombre": "Leche Entera",
+    "marca": "Alcampo",
+    "peso": "1000",
+    "precio": 2.2,
+    "barras": "8400050004444",
+    "imagen": "/imagenes/leche.jpg",
+    "categoria": "Leche",
+    "barrasOriginal": "8400000000004",
+    "codTienda": "5003"
+  },
+  {
+    "nombre": "Pan de molde",
+    "marca": "Alcampo",
+    "peso": "650",
+    "precio": 4.5,
+    "barras": "8400050001235",
+    "imagen": "/imagenes/bimbo.jpg",
+    "categoria": "Pan",
+    "barrasOriginal": "8400000000005",
+    "codTienda": "5003"
+  }
+]
