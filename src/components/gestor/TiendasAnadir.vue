@@ -1,1 +1,1 @@
-<tempalte></tempalte>
+<template></template>
