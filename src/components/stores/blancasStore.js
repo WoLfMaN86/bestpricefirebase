@@ -1,6 +1,7 @@
-import { defineStore } from 'pinia';
-import blancasJSON from '@/assets/productsBlancas.json';
-import { db } from "@/firebase";
+import { defineStore } from "pinia";
+import blancasJSON from "@/assets/productsBlancas.json";
+import { db } from "@/firebase.js";
+import { ref, set, onValue } from "firebase/database";
 
 export const usaBlancasStore = defineStore("usaBlancasStore", {
   state: () => ({
@@ -8,24 +9,27 @@ export const usaBlancasStore = defineStore("usaBlancasStore", {
   }),
 
   actions: {
-    agregarProducto(producto) {
+    async agregarProducto(producto) {
       this.productos.push(producto);
+      await set(ref(db, "productos"), this.productos);
     },
-    eliminarProducto(index) {
+    async eliminarProducto(index) {
       this.productos.splice(index, 1);
+      await set(ref(db, "productos"), this.productos);
     },
     buscarIndiceProducto(codigoBarras) {
       return this.productos.findIndex((producto) => producto.barras === codigoBarras);
     },
 
-    actualizarProducto(index, productoActualizado) {
+    async actualizarProducto(index, productoActualizado) {
       this.productos.splice(index, 1, productoActualizado);
+      await set(ref(db, "productos"), this.productos);
     },
-    // async fetchData() {
-    //   const dataRef = ref(db, "path/to/data");
-    //   onValue(dataRef, (snapshot) => {
-    //     this.$patch({ data: snapshot.val() });
-    //   });
-    // }
+    async fetchData() {
+      const dataRef = ref(db, "productos");
+      onValue(dataRef, (snapshot) => {
+        this.productos = snapshot.val();
+      });
+    }
   }
 });
