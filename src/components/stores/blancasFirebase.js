@@ -3,17 +3,21 @@ import { db } from '@/firebase';
 import productsBlancas from '@/assets/productsBlancas.json';
 
 export async function getProductosBlanca() {
-  const querySnapshot = await getDocs(collection(db, 'productosBlanca'));
-
-  if (querySnapshot.empty) {
-    for (const producto of productsBlancas) {
-      await addDoc(collection(db, 'productosBlanca'), producto);
+    const snapshot = await getDocs(collection(db, 'productosBlanca'));
+  
+    if (snapshot.empty) {
+      // La colección está vacía, carga los productos desde el archivo JSON
+      for (const producto of productsBlancas) {
+        await addDoc(collection(db, 'productosBlanca'), producto);
+      }
+      // Obtiene la lista de productos actualizada
+      const updatedSnapshot = await getDocs(collection(db, 'productosBlanca'));
+      return updatedSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    } else {
+      // La colección no está vacía, devuelve los productos almacenados en Firestore
+      return snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     }
   }
-
-  const updatedSnapshot = await getDocs(collection(db, 'productosBlanca'));
-  return updatedSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-}
 
 export async function getProductoBlanca(id) {
   const docRef = doc(db, 'productosBlanca', id);

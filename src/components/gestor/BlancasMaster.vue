@@ -112,8 +112,8 @@
     <div v-else>
       <EditarProducto
         :producto="productoEditando"
-        @cancel="cancelarEdicion"
-        @update="cancelarEdicion"
+        @cancel="editandoProducto = false"
+        @update="editandoProducto = false"
       />
     </div>
     <hr />
@@ -157,12 +157,14 @@
   </div>
 </template>
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
 import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 import EditarProducto from "./BlancasEditar.vue";
 import { useRouter } from "vue-router";
 import tiendas from "@/assets/tiendas.json";
 import tiendasOnline from "@/assets/tiendasOnline.json";
+
+
 export default defineComponent({
   components: { EditarProducto },
   data() {
@@ -179,9 +181,20 @@ export default defineComponent({
       filtroTienda: "",
       filtroMarca: "",
       filtroTiendaOnline: "",
+      
+
     };
   },
+  created() { 
+    this.productosStore.cargarProductos(); 
+  },
   computed: {
+    tiendasList() {
+      return tiendas;
+    },
+    tiendasOnlineList() {
+      return tiendasOnline;
+    },
     productosFiltrados() {
       let productos = [...this.productosStore.productos];
 
@@ -211,8 +224,8 @@ export default defineComponent({
           (producto) => producto.codTienda === this.filtroTiendaOnline
         );
       }
-            // Ordenar productos
-            switch (this.orden) {
+      // Ordenar productos
+      switch (this.orden) {
         case "ascendente":
           productos.sort((a, b) => a.nombre.localeCompare(b.nombre));
           break;
