@@ -80,7 +80,7 @@ app.use(PrimeVue);
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
-
+export { db };
 // Pasa la instancia de Firestore a tu aplicación Vue
 app.config.globalProperties.$db = db;
 

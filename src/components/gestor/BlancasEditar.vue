@@ -131,8 +131,8 @@
 
 <script>
 import { defineComponent } from "vue";
-import { usaBlancasStore } from "@/components/stores/blancasStore.js";
-import { actualizarProductoBlanca } from "@/components/stores/blancasFirebase.js";
+import { usaBlancasStore } from "@/components/stores/blancasStore";
+import { actualizarProductoBlanca } from "@/components/stores/blancasFirebase";
 
 export default defineComponent({
   name: "BlancasEditar",
@@ -164,16 +164,16 @@ export default defineComponent({
   },
   methods: {
     async guardarProducto() {
-  const codigoBarras = this.productoEditado.barras;
-  const index = this.productosStore.buscarIndiceProducto(codigoBarras);
-  if (index !== -1) {
-    await this.productosStore.actualizarProducto(index, this.productoEditado);
-    console.log(`Actualizando producto marca blanca ${this.productoEditado.nombre}`);
-  } else {
-    console.error('No se encontró el producto');
-  }
-  this.$emit("cancel");
-},
+      const codigoBarras = this.productoEditado.barras;
+      const index = this.productosStore.buscarIndiceProducto(codigoBarras);
+      if (index !== -1) {
+        await actualizarProductoBlanca(this.productoEditado.id, this.productoEditado);
+        console.log(`Actualizando producto marca blanca ${this.productoEditado.nombre}`);
+      } else {
+        console.error('No se encontró el producto');
+      }
+      this.$emit("cancel");
+    },
     onImageChange(event) {
       this.productoEditado.imagen = URL.createObjectURL(event.target.files[0]);
     },
