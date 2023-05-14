@@ -8,6 +8,15 @@
       class="filtro d-flex flex-row flex-wrap align-items-center justify-content-center"
     >
       <div class="form-group mb-2 mr-2">
+        <label for="filtro-marca" class="mr-2">Filtrar por marca:</label>
+        <input
+          type="text"
+          id="filtro-marca"
+          v-model="filtroMarca"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group mb-2 mr-2">
         <label for="filtro-cat" class="mr-2">Filtrar por categoría:</label>
         <input
           type="text"
@@ -133,6 +142,7 @@ export default defineComponent({
       router: useRouter(),
       orden: "sin-filtros",
       filtroCategoria: "",
+      filtroMarca: "",
     };
   },
   computed: {
@@ -148,6 +158,13 @@ export default defineComponent({
         );
       }
 
+      // Filtrar por marca
+      if (this.filtroMarca) {
+        productos = productos.filter((producto) =>
+          producto.marca.toLowerCase().includes(this.filtroMarca.toLowerCase())
+        );
+      }
+
       // Ordenar productos
       switch (this.orden) {
         case "ascendente":
@@ -155,7 +172,10 @@ export default defineComponent({
           break;
         case "descendente":
           productos.sort((a, b) => b.nombre.localeCompare(a.nombre));
-          break; 
+          break;
+        case "sin-filtros":
+          // No aplicar orden
+          break;
       }
 
       return productos;

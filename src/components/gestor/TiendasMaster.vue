@@ -195,9 +195,7 @@ export default defineComponent({
       // Filtrar por código postal
       if (this.filtroCodPostal) {
         tiendas = tiendas.filter((tienda) =>
-          tienda.codPostal
-            
-            .includes(this.filtroCodPostal)
+          tienda.codPostal.includes(this.filtroCodPostal)
         );
       }
 

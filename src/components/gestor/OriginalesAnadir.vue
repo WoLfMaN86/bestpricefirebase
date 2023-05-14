@@ -210,6 +210,8 @@ export default defineComponent({
       };
       this.productosStore.agregarProducto(nuevoProducto);
 
+      //   this.productos.push(nuevoProducto);
+      //   originalesStore.agregarProducto(nuevoProducto);
       this.nombre = "";
       this.marca = "";
       this.peso = "";
@@ -233,6 +235,12 @@ export default defineComponent({
   justify-content: space-between;
 }
 
+.title {
+  font-size: 24px;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
 .titulo {
   text-align: center;
   margin-top: 40px;

@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import tiendasJSON from '@/assets/tiendas.json';
+import { defineStore } from "pinia";
+import tiendasJSON from "@/assets/tiendas.json";
 
 export const usaTiendasStore = defineStore("usaTiendaStore", {
   state: () => ({
@@ -19,6 +19,6 @@ export const usaTiendasStore = defineStore("usaTiendaStore", {
 
     actualizarTienda(index, tiendaActualizado) {
       this.tiendas.splice(index, 1, tiendaActualizado);
-    }
-  }
+    },
+  },
 });

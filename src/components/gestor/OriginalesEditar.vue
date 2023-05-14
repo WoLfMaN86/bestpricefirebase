@@ -175,6 +175,10 @@ export default defineComponent({
   flex-wrap: wrap;
 }
 
+.col-md-6 {
+  flex-basis: 48%;
+}
+
 .form {
   display: flex;
   flex-direction: column;

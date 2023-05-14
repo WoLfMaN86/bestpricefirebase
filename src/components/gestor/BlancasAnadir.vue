@@ -1,96 +1,96 @@
 <template>
-    <div class="container">
-      <div class="col-md-12 mx-auto">
-        <h2 class="titulo">
-          Añadir producto marca blanca
-          <button class="btn btn-volver" @click="volver">Volver</button>
-        </h2>
-      </div>
-      <div class="row">
-        <div class="col-md-12 col-lg-6 mx-auto">
-          <form @submit.prevent="onSubmit" class="form">
-            <div class="form-control">
-              <label for="nombre" class="label">Nombre:</label>
-              <input
-                id="nombre"
-                type="text"
-                class="input"
-                v-model="nombre"
-                required
-              />
-              <small class="form-text text-muted">Ejemplo: Galletas Oreo</small>
-            </div>
-  
-            <div class="form-control">
-              <label for="marca" class="label">Marca:</label>
-              <input
-                id="marca"
-                type="text"
-                class="input"
-                v-model="marca"
-                required
-              />
-              <small class="form-text text-muted">Ejemplo: Marca Blanca</small>
-            </div>
-  
-            <div class="form-control">
-              <label for="peso" class="label">Peso:</label>
-              <input
-                id="peso"
-                type="text"
-                class="input"
-                v-model="peso"
-                required
-              />
-              <small class="form-text text-muted">Ejemplo: 500g</small>
-            </div>
-  
-            <div class="form-control">
-              <label for="precio" class="label">Precio:</label>
-              <input
-                id="precio"
-                type="number"
-                step="0.01"
-                class="input"
-                v-model="precio"
-                required
-              />
-              <small class="form-text text-muted">Ejemplo: 1.50</small>
-            </div>
-  
-            <div class="form-control">
-              <label for="barras" class="label">Código de Barras:</label>
-              <input
-                id="barras"
-                type="number"
-                step="1"
-                class="input"
-                v-model="barras"
-                required
-                length="13"
-              />
-              <small class="form-text text-muted"
-                >Ejemplo: Código de barras marca blanca: Ej=> 8400000000000 (13 digitos)</small
-              >
-            </div>
-  
-            <div class="form-control">
-              <label for="categoria" class="label">Categoría:</label>
-              <input
-                id="categoria"
-                type="text"
-                class="input"
-                v-model="categoria"
-                required
-              />
-              <small class="form-text text-muted">Ejemplo: Galletas</small>
-            </div>
-  
-            <div class="form-control">
-                <label for="barrasOriginal" class="label">
-    Código de Barras Original:
+  <div class="container">
+    <div class="col-md-12 mx-auto">
+      <h2 class="titulo">
+        Añadir producto marca blanca
+        <button class="btn btn-volver" @click="volver">Volver</button>
+      </h2>
+    </div>
+    <div class="row">
+      <div class="col-md-12 col-lg-6 mx-auto">
+        <form @submit.prevent="onSubmit" class="form">
+          <div class="form-control">
+            <label for="nombre" class="label">Nombre:</label>
+            <input
+              id="nombre"
+              type="text"
+              class="input"
+              v-model="nombre"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: Galletas Oreo</small>
+          </div>
 
-  </label>
+          <div class="form-control">
+            <label for="marca" class="label">Marca:</label>
+            <input
+              id="marca"
+              type="text"
+              class="input"
+              v-model="marca"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: Marca Blanca</small>
+          </div>
+
+          <div class="form-control">
+            <label for="peso" class="label">Peso:</label>
+            <input
+              id="peso"
+              type="text"
+              class="input"
+              v-model="peso"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: 500g</small>
+          </div>
+
+          <div class="form-control">
+            <label for="precio" class="label">Precio:</label>
+            <input
+              id="precio"
+              type="number"
+              step="0.01"
+              class="input"
+              v-model="precio"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: 1.50</small>
+          </div>
+
+          <div class="form-control">
+            <label for="barras" class="label">Código de Barras:</label>
+            <input
+              id="barras"
+              type="number"
+              step="1"
+              class="input"
+              v-model="barras"
+              required
+              length="13"
+            />
+            <small class="form-text text-muted"
+              >Ejemplo: Código de barras marca blanca: Ej=> 8400000000000 (13
+              digitos)</small
+            >
+          </div>
+
+          <div class="form-control">
+            <label for="categoria" class="label">Categoría:</label>
+            <input
+              id="categoria"
+              type="text"
+              class="input"
+              v-model="categoria"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: Galletas</small>
+          </div>
+
+          <div class="form-control">
+            <label for="barrasOriginal" class="label">
+              Código de Barras Original:
+            </label>
             <input
               id="barrasOriginal"
               type="number"
@@ -101,94 +101,104 @@
               :maxlength="13"
               @input="actualizarProductoOriginal"
             />
-            <small class="form-text text-muted">
-              13 digitos.
-            </small>
+            <small class="form-text text-muted"> 13 digitos. </small>
           </div>
-<div class="form-control">
-        <label for="codTienda" class="label">Tienda:</label>
-        <select id="codTienda" class="input" v-model="codTienda" required>
-          <option
-            v-for="(tienda, index) in tiendasStore.tiendas"
+          <div class="form-control">
+            <label for="codTienda" class="label">Tienda:</label>
+            <select id="codTienda" class="input" v-model="codTienda" required>
+              <option
+                v-for="(tienda, index) in tiendasStore.tiendas"
+                :key="index"
+                :value="tienda.codTienda"
+              >
+                {{ tienda.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-control">
+            <label for="descripcion" class="label">Descripción:</label>
+            <textarea
+              id="descripcion"
+              class="input"
+              v-model="descripcion"
+              required
+              rows="3"
+            ></textarea>
+            <small class="form-text text-muted"
+              >Ejemplo: El arroz de la tienda de Diego es el mejor arroz de la
+              comarca.</small
+            >
+          </div>
+          <button type="submit" class="btn btn-primary" :disabled="Incompleto">
+            Agregar Producto
+          </button>
+        </form>
+      </div>
+      <div class="col-md-12 col-lg-6 mx-auto">
+        <div class="form-control2">
+          <label for="imagen" class="label">Imagen del producto:</label>
+          <input
+            id="imagen"
+            type="file"
+            class="form-control-file"
+            @change="onImageChange"
+          />
+          <img
+            v-if="imagen"
+            :src="imagen"
+            class="img-thumbnail mt-3"
+            style="max-width: 300px"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="modal-body">
+        <div class="col-md-12 mx-auto">
+          <div
+            v-for="(producto, index) in productosStore.productos"
             :key="index"
-            :value="tienda.codTienda"
           >
-            {{ tienda.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :disabled="Incompleto"
-      >
-        Agregar Producto
-      </button>
-    </form>
-  </div>
-  <div class="col-md-12 col-lg-6 mx-auto">
-    <div class="form-control2">
-      <label for="imagen" class="label">Imagen del producto:</label>
-      <input
-        id="imagen"
-        type="file"
-        class="form-control-file"
-        @change="onImageChange"
-      />
-      <img
-        v-if="imagen"
-        :src="imagen"
-        class="img-thumbnail mt-3"
-        style="max-width: 300px"
-      />
-    </div>
-  </div>
-</div>
-<div class="row">
-  <div class="modal-body">
-    <div class="col-md-12 mx-auto">
-      <div
-        v-for="(producto, index) in productosStore.productos"
-        :key="index"
-      >
-        <div class="row">
-          <div class="col-md-2"><strong>Nombre:</strong></div>
-          <div class="col-md-4">{{ producto.nombre }}</div>
-          <div class="col-md-2"><strong>Marca:</strong></div>
-          <div class="col-md-4">{{ producto.marca }}</div>
+            <div class="row">
+              <div class="col-md-2"><strong>Nombre:</strong></div>
+              <div class="col-md-4">{{ producto.nombre }}</div>
+              <div class="col-md-2"><strong>Marca:</strong></div>
+              <div class="col-md-4">{{ producto.marca }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Peso:</strong></div>
+              <div class="col-md-4">{{ producto.peso }}</div>
+              <div class="col-md-2"><strong>Precio:</strong></div>
+              <div class="col-md-4">{{ producto.precio }} €</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Código de Barras:</strong></div>
+              <div class="col-md-4">{{ producto.barras }}</div>
+              <div class="col-md-2"><strong>Categoría:</strong></div>
+              <div class="col-md-4">{{ producto.categoria }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Original:</strong></div>
+              <div class="col-md-4">{{ producto.barrasOriginal }}</div>
+              <div class="col-md-2"><strong>Tienda:</strong></div>
+              <div class="col-md-4">{{ producto.codTienda }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-2"><strong>Descripción:</strong></div>
+              <div class="col-md-10">{{ producto.descripcion }}</div>
+            </div>
+            <hr />
+          </div>
         </div>
-        <div class="row">
-          <div class="col-md-2"><strong>Peso:</strong></div>
-          <div class="col-md-4">{{ producto.peso }}</div>
-          <div class="col-md-2"><strong>Precio:</strong></div>
-          <div class="col-md-4">{{ producto.precio }} €</div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"><strong>Código de Barras:</strong></div>
-          <div class="col-md-4">{{ producto.barras }}</div>
-          <div class="col-md-2"><strong>Categoría:</strong></div>
-          <div class="col-md-4">{{ producto.categoria }}</div>
-        </div>
-        <div class="row">
-          <div class="col-md-2"><strong>Original:</strong></div>
-          <div class="col-md-4">{{ producto.barrasOriginal }}</div>
-          <div class="col-md-2"><strong>Tienda:</strong></div>
-          <div class="col-md-4">{{ producto.codTienda }}</div>
-        </div>
-        <hr />
       </div>
     </div>
   </div>
-</div>
-</div>
 </template>
 
 <script>
 import { defineComponent, ref, computed, watch, onMounted } from "vue";
 import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
-
 
 export default defineComponent({
   components: {},
@@ -200,13 +210,13 @@ export default defineComponent({
       precio: "",
       barras: "",
       categoria: "",
+      descripcion: "",
       imagen: "",
       barrasOriginal: "",
       codTienda: "",
       productos: [],
       productosStore: usaBlancasStore(),
       tiendasStore: usaTiendasStore(),
-      
     };
   },
   computed: {
@@ -217,20 +227,20 @@ export default defineComponent({
         !this.peso ||
         !this.precio ||
         !this.barras ||
-        !this.categoria ||        
+        !this.categoria ||
         !this.barrasOriginal ||
-        !this.codTienda || 
+        !this.codTienda ||
         this.barras.toString().length !== 13 ||
-        this.barrasOriginal.toString().length !== 13 
+        this.barrasOriginal.toString().length !== 13
       );
     },
   },
- 
+
   methods: {
     volver() {
       this.$router.push("/blancas");
     },
-    
+
     onSubmit() {
       const nuevoProducto = {
         nombre: this.nombre,
@@ -239,6 +249,7 @@ export default defineComponent({
         precio: this.precio,
         barras: this.barras,
         categoria: this.categoria,
+        descripcion: this.descripcion,
         imagen: this.imagen,
         barrasOriginal: this.barrasOriginal,
         codTienda: this.codTienda,
@@ -278,10 +289,10 @@ export default defineComponent({
   margin-bottom: 20px;
 }
 .titulo {
-    text-align: center;
-    margin-top: 40px;
-    background-color: blanchedalmond;
-  }
+  text-align: center;
+  margin-top: 40px;
+  background-color: blanchedalmond;
+}
 .row {
   display: flex;
   flex-direction: row;
@@ -362,5 +373,3 @@ export default defineComponent({
   background-color: #0069d9;
 }
 </style>
-
-  

@@ -18,6 +18,16 @@ export const usaOriginalesStore = defineStore("usaOriginalesStore", {
         (producto) => producto.barras === codigoBarras
       );
     },
+    // guardarProducto(productoActualizado) {
+    //   const index = this.productos.findIndex(
+    //     (producto) => producto.id === productoActualizado.id
+    //   );
+    //   if (index !== -1) {
+    //     this.productos[index] = { ...productoActualizado };
+    //   } else {
+    //     console.error('Error al guardar el producto, no se encontró el índice');
+    //   }
+    // },
     actualizarProducto(index, productoActualizado) {
       this.productos.splice(index, 1, productoActualizado);
     },

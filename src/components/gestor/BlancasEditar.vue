@@ -1,113 +1,115 @@
 <template>
-    <div class="container">
-      <h2 class="title">Editar Producto Marca Blanca</h2>
-      <form @submit.prevent="guardarProducto" class="form">
-        <div class="row">
-          <div class="col-md-12 col-lg-6 mx-auto">
-            <div class="form-control">
-              <label for="nombre" class="label">Nombre:</label>
-              <input
-                id="nombre"
-                type="text"
-                class="input"
-                v-model="productoEditado.nombre"
-                required
-              />
-            </div>
-            <div class="form-control">
-              <label for="marca" class="label">Marca:</label>
-              <input
-                id="marca"
-                type="text"
-                class="input"
-                v-model="productoEditado.marca"
-                required
-              />
-            </div>
-            <div class="form-control">
-              <label for="peso" class="label">Peso neto:</label>
-              <input
-                id="peso"
-                type="number"
-                step="0.01"
-                class="input"
-                v-model="productoEditado.peso"
-                required
-              />
-            </div>
-            <div class="form-control">
-              <label for="precio" class="label">Precio:</label>
-              <input
-                id="precio"
-                type="number"
-                step="0.01"
-                class="input"
-                v-model="productoEditado.precio"
-                required
-              />
-            </div>
-            <div class="form-control">
-              <label for="barras" class="label">Código de Barras:</label>
-              <input
-                id="barras"
-                type="number"
-                step="1"
-                class="input"
-                v-model="productoEditado.barras"
-                required
-                length="13"
-              />
-            </div>
-            <div class="form-control">
-              <label for="categoria" class="label">Categoria: </label>
-              <input
-                id="categoria"
-                type="text"
-                class="input"
-                v-model="productoEditado.categoria"
-                required
-              />
-            </div>
-            <div class="form-control">
-              <label for="barrasOriginal" class="label">Código de Barras Original:</label>
-              <input
-                id="barrasOriginal"
-                type="number"
-                step="1"
-                class="input"
-                v-model="productoEditado.barrasOriginal"
-                required
-                length="13"
-              />
-            </div>
-            <div class="form-control">
-              <label for="codTienda" class="label">Código de Tienda:</label>
-              <input
-                id="codTienda"
-                type="text"
-                class="input"
-                v-model="productoEditado.codTienda"
-                required
-              />
-            </div>
-            <div class="button-container">
-              <button
-                type="submit"
-                class="btn btn-primary"
-                :disabled="Incompleto"
-              >
-                Guardar
-              </button>
-              <button
-                type="button"
-                class="btn btn-secondary"
-                @click="$emit('cancel')"
-              >
-                Cancelar
-              </button>
-            </div>
+  <div class="container">
+    <h2 class="title">Editar Producto Marca Blanca</h2>
+    <form @submit.prevent="guardarProducto" class="form">
+      <div class="row">
+        <div class="col-md-12 col-lg-6 mx-auto">
+          <div class="form-control">
+            <label for="nombre" class="label">Nombre:</label>
+            <input
+              id="nombre"
+              type="text"
+              class="input"
+              v-model="productoEditado.nombre"
+              required
+            />
           </div>
-          <div class="col-md-12 col-lg-6 mx-auto">
+          <div class="form-control">
+            <label for="marca" class="label">Marca:</label>
+            <input
+              id="marca"
+              type="text"
+              class="input"
+              v-model="productoEditado.marca"
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="peso" class="label">Peso neto:</label>
+            <input
+              id="peso"
+              type="number"
+              step="0.01"
+              class="input"
+              v-model="productoEditado.peso"
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="precio" class="label">Precio:</label>
+            <input
+              id="precio"
+              type="number"
+              step="0.01"
+              class="input"
+              v-model="productoEditado.precio"
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="barras" class="label">Código de Barras:</label>
+            <input
+              id="barras"
+              type="number"
+              step="1"
+              class="input"
+              v-model="productoEditado.barras"
+              required
+              length="13"
+            />
+          </div>
+          <div class="form-control">
+            <label for="categoria" class="label">Categoria: </label>
+            <input
+              id="categoria"
+              type="text"
+              class="input"
+              v-model="productoEditado.categoria"
+              required
+            />
+          </div>
+          <div class="form-control">
+            <label for="barrasOriginal" class="label"
+              >Código de Barras Original:</label
+            >
+            <input
+              id="barrasOriginal"
+              type="number"
+              step="1"
+              class="input"
+              v-model="productoEditado.barrasOriginal"
+              required
+              length="13"
+            />
+          </div>
+          <div class="form-control">
+            <label for="codTienda" class="label">Código de Tienda:</label>
+            <input
+              id="codTienda"
+              type="text"
+              class="input"
+              v-model="productoEditado.codTienda"
+              required
+            />
+          </div>
+          <div class="button-container">
+            <button
+              type="submit"
+              class="btn btn-primary"
+              :disabled="Incompleto"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="$emit('cancel')"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6 mx-auto">
           <div class="form-control">
             <label for="imagen" class="label">Imagen del producto:</label>
             <input
@@ -167,7 +169,9 @@ export default defineComponent({
         this.productoEditado.barras
       );
       this.productosStore.actualizarProducto(index, this.productoEditado);
-      console.log(`Actualizando producto marca blanca ${this.productoEditado.nombre}`);
+      console.log(
+        `Actualizando producto marca blanca ${this.productoEditado.nombre}`
+      );
       this.$emit("cancel");
     },
     onImageChange(event) {
@@ -176,7 +180,6 @@ export default defineComponent({
   },
 });
 </script>
-
 
 <style scoped>
 .container {
@@ -254,10 +257,8 @@ export default defineComponent({
   height: auto;
 }
 .button-container {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
 </style>
-
-  

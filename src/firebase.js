@@ -6,6 +6,7 @@ import { getDatabase } from "firebase/database";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
   apiKey: "AIzaSyBeRwsl5dfh-haxOYdmt7N-1eQqj4CtbGU",
   authDomain: "bestpricefire.firebaseapp.com",
@@ -14,6 +15,8 @@ const firebaseConfig = {
   messagingSenderId: "60677525154",
   appId: "1:60677525154:web:7d6cff8e190a58e94911fb"
 };
+
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);

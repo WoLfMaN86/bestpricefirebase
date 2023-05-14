@@ -4,7 +4,7 @@
     "nombre": "MercaDonDon",
     "direccion": "Calle falsa 123",
     "telefono": "983456666",
-    "codPostal": "47004"
+    "codPostal": "47006"
   },
   {
     "codTienda": "1002",
@@ -18,6 +18,6 @@
     "nombre": "El Alidepende es mejor",
     "direccion": "Plaza del tuso 888",
     "telefono": "983422256",
-    "codPostal": "47003"
+    "codPostal": "47002"
   }
 ]

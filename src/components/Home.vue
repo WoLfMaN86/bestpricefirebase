@@ -1,5 +1,5 @@
 <template>
-  <div class="home container">
+  <div class="home container" v-if="!codPostalStore.codPostal">
     <div class="row">
       <div class="col-md-6 text-center">
         <h1>¡Bienvenido a BestPrice!</h1>
@@ -39,6 +39,9 @@
       </div>
     </div>
   </div>
+  <div v-else>
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
@@ -74,6 +77,11 @@ export default defineComponent({
       this.$router.replace({ name: "Bienvenido" });
       this.isNavigating = false;
     },
+  },
+  mounted() {
+    if (this.codPostalStore.codPostal) {
+      this.$router.replace({ name: "Bienvenido" });
+    }
   },
 });
 </script>

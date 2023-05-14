@@ -34,9 +34,9 @@
         </select>
       </div>
       <div class="form-group mb-2 mr-2">
-        <label for="filtro-tienda" class="mr-2">Filtrar por tienda:</label>
+        <label for="filtro-tienda" class="mr-2">Filtrar por tienda fisicas:</label>
         <select id="filtro-tienda" v-model="filtroTienda" class="form-control">
-          <option value="">Todas las tiendas</option>
+          <option value="">Todas las tiendas fisicas</option>
           <option
             v-for="tienda in tiendasList"
             :key="tienda.codTienda"
@@ -47,19 +47,24 @@
         </select>
       </div>
       <div class="form-group mb-2 mr-2">
-  <label for="filtro-tienda-online" class="mr-2">Filtrar por tienda en línea:</label>
-  <select id="filtro-tienda-online" v-model="filtroTiendaOnline" class="form-control">
-    <option value="">Todas las tiendas en línea</option>
-    <option
-      v-for="tiendaOnline in tiendasOnlineList"
-      :key="tiendaOnline.codTienda"
-      :value="tiendaOnline.codTienda"
-    >
-      {{ tiendaOnline.nombre }}
-    </option>
-  </select>
-</div>
-
+        <label for="filtro-tienda-online" class="mr-2"
+          >Filtrar por tienda online:</label
+        >
+        <select
+          id="filtro-tienda-online"
+          v-model="filtroTiendaOnline"
+          class="form-control"
+        >
+          <option value="">Todas las tiendas online</option>
+          <option
+            v-for="tiendaOnline in tiendasOnlineList"
+            :key="tiendaOnline.codTienda"
+            :value="tiendaOnline.codTienda"
+          >
+            {{ tiendaOnline.nombre }}
+          </option>
+        </select>
+      </div>
     </div>
     <div
       v-if="!editandoProducto"
@@ -152,26 +157,16 @@
   </div>
 </template>
 <script>
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 import EditarProducto from "./BlancasEditar.vue";
 import { useRouter } from "vue-router";
 import tiendas from "@/assets/tiendas.json";
 import tiendasOnline from "@/assets/tiendasOnline.json";
 
-import { db } from "@/firebase.js";
-import { ref, onValue } from "firebase/database";
-
 export default defineComponent({
   components: { EditarProducto },
   data() {
-    const fetchData = () => {
-    const dataRef = ref(db, "path/to/data");
-    onValue(dataRef, (snapshot) => {
-      this.productosStore.$patch({ productos: snapshot.val() });
-    });
-  };
-  onMounted(fetchData);
     return {
       productosStore: usaBlancasStore(),
       editandoProducto: false,
@@ -192,8 +187,8 @@ export default defineComponent({
       return tiendas;
     },
     tiendasOnlineList() {
-    return tiendasOnline;
-  },
+      return tiendasOnline;
+    },
     productosFiltrados() {
       let productos = [...this.productosStore.productos];
 
@@ -217,12 +212,12 @@ export default defineComponent({
           (producto) => producto.codTienda === this.filtroTienda
         );
       }
-    // Filtrar por tienda onlínea
-    if (this.filtroTiendaOnline) {
-      productos = productos.filter(
-        (producto) => producto.codTienda === this.filtroTiendaOnline
-      );
-    }
+      // Filtrar por tienda onlínea
+      if (this.filtroTiendaOnline) {
+        productos = productos.filter(
+          (producto) => producto.codTienda === this.filtroTiendaOnline
+        );
+      }
       // Ordenar productos
       switch (this.orden) {
         case "ascendente":
@@ -262,7 +257,6 @@ export default defineComponent({
     irABlancas() {
       this.router.push("/blancas/add");
     },
-    
   },
 });
 </script>

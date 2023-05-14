@@ -2,15 +2,10 @@
   <nav class="navbar navbar-expand-lg bd-navbar sticky-top">
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/">
-        <img
-          src="../assets/logoBP.png"
-          alt="BestPrice"
-          width="50"
-          height="50"
-        />
+        <img src="../assets/logoBP.png" alt="BestPrice" width="50" height="50" />
       </router-link>
       <button
-      class="navbar-toggler"
+        class="navbar-toggler"
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#navbarSupportedContent"
@@ -40,7 +35,7 @@
               >Home</router-link
             >
           </li>
-          
+
           <li class="nav-item dropdown">
             <a
               class="nav-link dropdown-toggle"
@@ -94,12 +89,14 @@
             </ul>
           </li>
         </ul>
-        <form class="d-flex" role="search">
+        <form class="d-flex" role="search" @submit.prevent="buscarProductos">
           <input
+            ref="searchInput"
             class="form-control me-2"
             type="search"
             placeholder="Buscador"
             aria-label="Search"
+            v-model="filtroNombreOriginal"
           />
           <button class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
@@ -108,9 +105,29 @@
   </nav>
 </template>
 
-<script></script>
+<script>
+export default {
+  data() {
+    return {
+      filtroNombreOriginal: "",
+      navbarOpen: false,
+      dropdownOpen: false,
+    };
+  },
+  methods: {
+    buscarProductos() {
+  this.$router.replace({
+    name: "Bienvenido",
+    query: { filtroNombreOriginal: this.filtroNombreOriginal },
+  });
+    },}}
+
+</script>
+
+
 
 <style scoped>
+
 nav {
   background: linear-gradient(to right, #09e05f, #f78f2d);
   color: #fff;
