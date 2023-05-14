@@ -27,6 +27,10 @@ import "primevue/resources/themes/saga-blue/theme.css";
 import "primevue/resources/primevue.min.css";
 import "primeicons/primeicons.css";
 
+
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
+
 const routes = [
   { path: "/", component: Home, name: "home" },
   { path: "/fisica", component: Tienda, name: "fisicaMaster" },
@@ -43,6 +47,23 @@ const routes = [
   //   { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound },
 ];
 
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyBeRwsl5dfh-haxOYdmt7N-1eQqj4CtbGU",
+  authDomain: "bestpricefire.firebaseapp.com",
+  projectId: "bestpricefire",
+  storageBucket: "bestpricefire.appspot.com",
+  messagingSenderId: "60677525154",
+  appId: "1:60677525154:web:7d6cff8e190a58e94911fb"
+};
+
+
+
+
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
@@ -56,4 +77,12 @@ app.use(pinia);
 app.use(router);
 app.use(PrimeVue);
 
-app.mount("#app");
+
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+
+// Pasa la instancia de Firestore a tu aplicación Vue
+app.config.globalProperties.$db = db;
+
+// Monta la aplicación
+app.mount('#app');
