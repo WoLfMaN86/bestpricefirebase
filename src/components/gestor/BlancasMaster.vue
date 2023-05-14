@@ -185,9 +185,10 @@ export default defineComponent({
 
     };
   },
-  created() { 
-    this.productosStore.cargarProductos(); 
-  },
+  created() {
+  this.productosStore.cargarProductos();
+  console.log("Productos cargados:", this.productosStore.productos);
+},
   computed: {
     tiendasList() {
       return tiendas;
