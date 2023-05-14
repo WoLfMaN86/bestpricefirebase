@@ -69,7 +69,9 @@
             />
           </div>
           <div class="form-control">
-            <label for="barrasOriginal" class="label">Código de Barras Original:</label>
+            <label for="barrasOriginal" class="label"
+              >Código de Barras Original:</label
+            >
             <input
               id="barrasOriginal"
               type="number"
@@ -92,47 +94,46 @@
           </div>
           <div class="button-container">
             <button
-  type="submit"
-  class="btn btn-primary"
-  :disabled="Incompleto"
->
-  Guardar
-</button>
-<button
-  type="button"
-  class="btn btn-secondary"
-  @click="$emit('cancel')"
->
-  Cancelar
-</button>
-</div>
-</div>
-<div class="col-md-12 col-lg-6 mx-auto">
-  <div class="form-control">
-    <label for="imagen" class="label">Imagen del producto:</label>
-    <input
-      id="imagen"
-      type="file"
-      class="form-control-file"
-      @change="onImageChange"
-    />
-    <img
-      v-if="productoEditado.imagen"
-      :src="productoEditado.imagen"
-      class="img-thumbnail mt-3"
-      style="max-width: 300px"
-    />
+              type="submit"
+              class="btn btn-primary"
+              :disabled="Incompleto"
+            >
+              Guardar
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="$emit('cancel')"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+        <div class="col-md-12 col-lg-6 mx-auto">
+          <div class="form-control">
+            <label for="imagen" class="label">Imagen del producto:</label>
+            <input
+              id="imagen"
+              type="file"
+              class="form-control-file"
+              @change="onImageChange"
+            />
+            <img
+              v-if="productoEditado.imagen"
+              :src="productoEditado.imagen"
+              class="img-thumbnail mt-3"
+              style="max-width: 300px"
+            />
+          </div>
+        </div>
+      </div>
+    </form>
   </div>
-</div>
-</div>
-</form>
-</div>
 </template>
 
 <script>
 import { defineComponent } from "vue";
-import { usaBlancasStore } from "@/components/stores/blancasStore";
-import { actualizarProductoBlanca } from "@/components/stores/blancasFirebase";
+import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 
 export default defineComponent({
   name: "BlancasEditar",
@@ -163,15 +164,14 @@ export default defineComponent({
     },
   },
   methods: {
-    async guardarProducto() {
-      const codigoBarras = this.productoEditado.barras;
-      const index = this.productosStore.buscarIndiceProducto(codigoBarras);
-      if (index !== -1) {
-        await actualizarProductoBlanca(this.productoEditado.id, this.productoEditado);
-        console.log(`Actualizando producto marca blanca ${this.productoEditado.nombre}`);
-      } else {
-        console.error('No se encontró el producto');
-      }
+    guardarProducto() {
+      const index = this.productosStore.buscarIndiceProducto(
+        this.productoEditado.barras
+      );
+      this.productosStore.actualizarProducto(index, this.productoEditado);
+      console.log(
+        `Actualizando producto marca blanca ${this.productoEditado.nombre}`
+      );
       this.$emit("cancel");
     },
     onImageChange(event) {
@@ -231,7 +231,6 @@ export default defineComponent({
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  width: 100%;
 }
 
 .btn {
@@ -257,11 +256,9 @@ export default defineComponent({
   max-width: 100%;
   height: auto;
 }
-
 .button-container {
   display: flex;
   justify-content: center;
   gap: 15px;
 }
 </style>
-

@@ -157,13 +157,12 @@
   </div>
 </template>
 <script>
-import { defineComponent, onMounted } from "vue";
+import { defineComponent } from "vue";
 import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 import EditarProducto from "./BlancasEditar.vue";
 import { useRouter } from "vue-router";
 import tiendas from "@/assets/tiendas.json";
 import tiendasOnline from "@/assets/tiendasOnline.json";
-
 
 export default defineComponent({
   components: { EditarProducto },
@@ -181,14 +180,8 @@ export default defineComponent({
       filtroTienda: "",
       filtroMarca: "",
       filtroTiendaOnline: "",
-      
-
     };
   },
-  created() {
-  this.productosStore.cargarProductos();
-  console.log("Productos cargados:", this.productosStore.productos);
-},
   computed: {
     tiendasList() {
       return tiendas;
