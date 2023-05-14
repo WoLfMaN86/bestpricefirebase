@@ -251,42 +251,86 @@ const tiendasCoinciden = this.tiendasOrdenadasPorPrecio(original.barras).filter(
     tiendasOrdenadasPorPrecio(barrasOriginal) {
   const tiendas = [];
 
-  const productosBlancaFisica = this.productosBlanca.filter(producto => {
-    const tiendaFisica = this.tiendasFisicas.find(t => t.codTienda === producto.codTienda);
-    return tiendaFisica && producto.barrasOriginal === barrasOriginal &&
-      (!this.filtroMarca || producto.marca.toLowerCase().includes(this.filtroMarca.toLowerCase()));
-  });
+  this.productosBlanca.forEach((producto) => {
+    if (
+      producto.barrasOriginal === barrasOriginal &&
+      (!this.filtroMarca ||
+        producto.marca.toLowerCase().includes(this.filtroMarca.toLowerCase()))
+    ) {
+      let tienda = {};
 
-  const productosBlancaOnline = this.productosBlanca.filter(producto => {
-    const tiendaOnline = this.tiendasOnline.find(t => t.codTienda === producto.codTienda);
-    return tiendaOnline && producto.barrasOriginal === barrasOriginal &&
-      (!this.filtroMarca || producto.marca.toLowerCase().includes(this.filtroMarca.toLowerCase()));
-  });
+      tienda.producto = producto;
 
-  productosBlancaFisica.forEach(producto => {
-    const tiendaFisica = this.tiendasFisicas.find(t => t.codTienda === producto.codTienda);
-    const coincideCodPostal = !this.filtroCodPostal ||
-      (tiendaFisica.codPostal && tiendaFisica.codPostal.includes(this.filtroCodPostal));
-    if (coincideCodPostal) {
-      tiendas.push({ producto, tienda: tiendaFisica });
+      const tiendaFisica = this.tiendasFisicas.find(
+        (t) => t.codTienda === producto.codTienda
+      );
+
+      if (tiendaFisica) {
+        tienda.tienda = tiendaFisica;
+      } else {
+        const tiendaOnline = this.tiendasOnline.find(
+          (t) => t.codTienda === producto.codTienda
+        );
+
+        if (tiendaOnline) {
+          tienda.tienda = tiendaOnline;
+          tienda.envio = tiendaOnline.envio;
+          tienda.enviaOnline = true;
+        }
+      }
+
+      const coincideCodPostal =
+        !this.filtroCodPostal ||
+        (tienda.enviaOnline
+          ? (tienda.tienda.codPostal && tienda.tienda.codPostal.includes(this.filtroCodPostal))
+          : true);
+
+      if (coincideCodPostal) {
+        tiendas.push(tienda);
+      }
     }
   });
 
-  productosBlancaOnline.forEach(producto => {
-    const tiendaOnline = this.tiendasOnline.find(t => t.codTienda === producto.codTienda);
-    const coincideCodPostal = !this.filtroCodPostal ||
-      (tiendaOnline.codPostal && tiendaOnline.codPostal.includes(this.filtroCodPostal));
-    if (coincideCodPostal) {
-      tiendas.push({ producto, tienda: tiendaOnline, envio: tiendaOnline.envio, enviaOnline: true });
-    }
-  });
+  const tiendasOrdenadas = tiendas.sort((a, b) => {
+    const precioA = parseFloat(
+      this.precioPorKilogramo(a.producto.precio, a.producto.peso)
+    );
+    const precioB = parseFloat(
+      this.precioPorKilogramo(b.producto.precio, b.producto.peso)
+    );
 
-  return tiendas.sort((a, b) => {
-    const precioA = parseFloat(this.precioPorKilogramo(a.producto.precio, a.producto.peso));
-    const precioB = parseFloat(this.precioPorKilogramo(b.producto.precio, b.producto.peso));
     return precioA - precioB;
   });
+
+  return tiendasOrdenadas.map((tienda) => {
+    const codigoPostalDiferencia = this.codigoPostalDiferencia(tienda.tienda.codPostal);
+    tienda.marcaColorClass = this.getMarcaColorClass(codigoPostalDiferencia, tienda.enviaOnline);
+    return tienda;
+  });
 },
+
+codigoPostalDiferencia(codPostal) {
+  if (codPostal === this.filtroCodPostal) {
+    return 0;
+  } else if (codPostal && this.filtroCodPostal && codPostal.includes(this.filtroCodPostal)) {
+    return 1;
+  } else {
+    return 2;
+  }
+},
+
+getMarcaColorClass(codigoPostalDiferencia, enviaOnline) {
+  if (codigoPostalDiferencia === 0) {
+    return 'marca-blanca';
+  } else if (codigoPostalDiferencia === 1) {
+    return 'marca-amarilla';
+  } else if (codigoPostalDiferencia > 1 && enviaOnline) {
+    return 'marca-roja';
+  } else {
+    return 'marca-otro-color';
+  }
+}
+
   },
   created() {
     // Observa los cambios tras pulsar busca en la barra de navegacion.
