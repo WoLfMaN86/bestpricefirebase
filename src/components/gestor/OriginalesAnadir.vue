@@ -163,6 +163,7 @@
 <script>
 import { defineComponent, ref, computed } from "vue";
 import { usaOriginalesStore } from "@/components/stores/originalesStore.js";
+import { postEntidad } from "@/components/stores/api-service";
 
 export default defineComponent({
   components: {},
@@ -198,7 +199,7 @@ export default defineComponent({
     agregarProducto(producto) {
       this.productosStore.agregarProducto(producto);
     },
-    onSubmit() {
+    async onSubmit() {
       const nuevoProducto = {
         nombre: this.nombre,
         marca: this.marca,
@@ -219,6 +220,14 @@ export default defineComponent({
       this.barras = "";
       this.categoria = "";
       this.imagen = "";
+      try {
+        await postEntidad(nuevoProducto);
+        this.showAlert();
+        this.eleccionServicio = null;
+      } catch (error) {
+        console.error("Error al guardar la reserva en la API:", error);
+        this.showAlertError();
+      }
     },
     onImageChange(event) {
       this.imagen = URL.createObjectURL(event.target.files[0]);

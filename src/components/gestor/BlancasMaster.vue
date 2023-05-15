@@ -34,7 +34,9 @@
         </select>
       </div>
       <div class="form-group mb-2 mr-2">
-        <label for="filtro-tienda" class="mr-2">Filtrar por tienda fisicas:</label>
+        <label for="filtro-tienda" class="mr-2"
+          >Filtrar por tienda fisicas:</label
+        >
         <select id="filtro-tienda" v-model="filtroTienda" class="form-control">
           <option value="">Todas las tiendas fisicas</option>
           <option
@@ -134,7 +136,7 @@
               {{ productoSeleccionado.barras }}?
             </p>
           </div>
-          <!-- Modal de confirmación -->
+
           <div class="modal-footer">
             <button
               type="button"
@@ -234,10 +236,14 @@ export default defineComponent({
       return productos;
     },
   },
+  mounted() {
+    this.productosStore.cargarProductos();
+  },
   methods: {
     buscarIndice(producto) {
       return this.productosStore.buscarIndiceProducto(producto.barras);
     },
+
     editarProducto(index) {
       this.productoEditando = this.productosStore.productos[index];
       this.editandoProducto = true;

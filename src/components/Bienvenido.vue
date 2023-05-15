@@ -67,32 +67,38 @@
                 <img :src="original.imagen" class="card-img-left img-thumbnail" :style="{ width: '100%' }"
                   alt="Producto original" />
               </div>
-              <div class="col-md-9">
-                <div v-for="tienda in tiendasOrdenadasPorPrecio(original.barras)" :key="tienda.tienda.codTienda">
-                  <p v-if="!filtroTienda || tienda.tienda.codTienda === filtroTienda">
-                  <div class="dato-container">
-                    <div class="dato-marca">
-                      <span :class="{
-                        'marca-blanca': true,
-                        'marca-amarilla': codigoPostalDiferencia(tienda.tienda.codPostal) === 1,
-                        'marca-roja': codigoPostalDiferencia(tienda.tienda.codPostal) > 1,
-                        'marca-verde': tienda.enviaOnline,
-                      }" @click="mostrarModalProducto(tienda.producto)"    style="cursor: pointer;">
-                        {{ tienda.producto.marca }}
-                      </span>
-                      <!-- ({{ tienda.tienda.nombre }}) - -->
-                    </div>
-                    <div class="dato-precio">
-                      {{ precioPorKilogramo(tienda.producto.precio, tienda.producto.peso) }} €/Kg
-                    </div>
-                    <div class="dato-envio">
-                      <span v-if="tienda.envio" class="text-danger">
-                        + {{ tienda.envio }} € envío
-                      </span>
-                    </div>
-                  </div>
 
-                  </p>
+              <div class="col-md-9">
+                <div v-if="loading" class="text-center">
+                  <h4>Cargando productos...</h4>
+                </div>
+                <div v-else>
+                  <div v-for="tienda in tiendasOrdenadasPorPrecio(original.barras)" :key="tienda.tienda.codTienda">
+                    <p v-if="!filtroTienda || tienda.tienda.codTienda === filtroTienda">
+                    <div class="dato-container">
+                      <div class="dato-marca">
+                        <span :class="{
+                          'marca-blanca': true,
+                          'marca-amarilla': codigoPostalDiferencia(tienda.tienda.codPostal) === 1,
+                          'marca-roja': codigoPostalDiferencia(tienda.tienda.codPostal) > 1,
+                          'marca-verde': tienda.enviaOnline,
+                        }" @click="mostrarModalProducto(tienda.producto)" style="cursor: pointer;">
+                          {{ tienda.producto.marca }}
+                        </span>
+                        <!-- ({{ tienda.tienda.nombre }}) - -->
+                      </div>
+                      <div class="dato-precio">
+                        {{ precioPorKilogramo(tienda.producto.precio, tienda.producto.peso) }} €/Kg
+                      </div>
+                      <div class="dato-envio">
+                        <span v-if="tienda.envio" class="text-danger">
+                          + {{ tienda.envio }} € envío
+                        </span>
+                      </div>
+                    </div>
+
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -172,7 +178,7 @@ export default defineComponent({
 
     return {
       originales: originalesStore.productos,
-      productosBlanca: productosBlancasStore.productos,
+      productosBlancas: productosBlancasStore.productos,
       tiendasFisicas: tiendasFisicasStore.tiendas,
       tiendasOnline: tiendasOnlineStore.tiendas,
       filtroMarca: "",
@@ -184,7 +190,12 @@ export default defineComponent({
       showModalProductos: false,
       productoSeleccionado: {},
       filtroNombreOriginal: this.$route.query.filtroNombreOriginal || "",
+      loading: true,
     };
+  },
+  async mounted() {
+    await usaBlancasStore().cargarProductos();
+    this.loading = false;
   },
   computed: {
     codigoPostal() {
@@ -206,12 +217,12 @@ export default defineComponent({
       };
     },
     originalesFiltrados() {
-  return this.originales.filter((original) => {
-    const nombreOriginalCoincide = this.filtroNombreOriginal
-      ? original.nombre
-          .toLowerCase()
-          .includes(this.filtroNombreOriginal.toLowerCase())
-      : true;
+      return this.originales.filter((original) => {
+        const nombreOriginalCoincide = this.filtroNombreOriginal
+          ? original.nombre
+            .toLowerCase()
+            .includes(this.filtroNombreOriginal.toLowerCase())
+          : true;
 
         const marcaOriginalCoincide = this.filtroMarcaOriginal
           ? original.marca
@@ -225,10 +236,10 @@ export default defineComponent({
             .includes(this.filtroCategoria.toLowerCase())
           : true;
 
-const tiendasCoinciden = this.tiendasOrdenadasPorPrecio(original.barras).filter(
-  (tienda) =>
-    this.filtroTienda === "" || tienda.tienda.codTienda === this.filtroTienda
-).length > 0 || this.filtroTienda === "";
+        const tiendasCoinciden = this.tiendasOrdenadasPorPrecio(original.barras).filter(
+          (tienda) =>
+            this.filtroTienda === "" || tienda.tienda.codTienda === this.filtroTienda
+        ).length > 0 || this.filtroTienda === "";
 
         return nombreOriginalCoincide && marcaOriginalCoincide && categoriaCoincide && tiendasCoinciden;
       });
@@ -249,87 +260,87 @@ const tiendasCoinciden = this.tiendasOrdenadasPorPrecio(original.barras).filter(
       return (precio / (peso / 1000)).toFixed(2);
     },
     tiendasOrdenadasPorPrecio(barrasOriginal) {
-  const tiendas = [];
+      const tiendas = [];
 
-  this.productosBlanca.forEach((producto) => {
-    if (
-      producto.barrasOriginal === barrasOriginal &&
-      (!this.filtroMarca ||
-        producto.marca.toLowerCase().includes(this.filtroMarca.toLowerCase()))
-    ) {
-      let tienda = {};
+      this.productosBlancas.forEach((producto) => {
+        if (
+          producto.barrasOriginal === barrasOriginal &&
+          (!this.filtroMarca ||
+            producto.marca.toLowerCase().includes(this.filtroMarca.toLowerCase()))
+        ) {
+          let tienda = {};
 
-      tienda.producto = producto;
+          tienda.producto = producto;
 
-      const tiendaFisica = this.tiendasFisicas.find(
-        (t) => t.codTienda === producto.codTienda
-      );
+          const tiendaFisica = this.tiendasFisicas.find(
+            (t) => t.codTienda === producto.codTienda
+          );
 
-      if (tiendaFisica) {
-        tienda.tienda = tiendaFisica;
-      } else {
-        const tiendaOnline = this.tiendasOnline.find(
-          (t) => t.codTienda === producto.codTienda
+          if (tiendaFisica) {
+            tienda.tienda = tiendaFisica;
+          } else {
+            const tiendaOnline = this.tiendasOnline.find(
+              (t) => t.codTienda === producto.codTienda
+            );
+
+            if (tiendaOnline) {
+              tienda.tienda = tiendaOnline;
+              tienda.envio = tiendaOnline.envio;
+              tienda.enviaOnline = true;
+            }
+          }
+
+          const coincideCodPostal =
+            !this.filtroCodPostal ||
+            (tienda.enviaOnline
+              ? (tienda.tienda.codPostal && tienda.tienda.codPostal.includes(this.filtroCodPostal))
+              : true);
+
+          if (coincideCodPostal) {
+            tiendas.push(tienda);
+          }
+        }
+      });
+
+      const tiendasOrdenadas = tiendas.sort((a, b) => {
+        const precioA = parseFloat(
+          this.precioPorKilogramo(a.producto.precio, a.producto.peso)
+        );
+        const precioB = parseFloat(
+          this.precioPorKilogramo(b.producto.precio, b.producto.peso)
         );
 
-        if (tiendaOnline) {
-          tienda.tienda = tiendaOnline;
-          tienda.envio = tiendaOnline.envio;
-          tienda.enviaOnline = true;
-        }
+        return precioA - precioB;
+      });
+
+      return tiendasOrdenadas.map((tienda) => {
+        const codigoPostalDiferencia = this.codigoPostalDiferencia(tienda.tienda.codPostal);
+        tienda.marcaColorClass = this.getMarcaColorClass(codigoPostalDiferencia, tienda.enviaOnline);
+        return tienda;
+      });
+    },
+
+    codigoPostalDiferencia(codPostal) {
+      if (codPostal === this.filtroCodPostal) {
+        return 0;
+      } else if (codPostal && this.filtroCodPostal && codPostal.includes(this.filtroCodPostal)) {
+        return 1;
+      } else {
+        return 2;
       }
+    },
 
-      const coincideCodPostal =
-        !this.filtroCodPostal ||
-        (tienda.enviaOnline
-          ? (tienda.tienda.codPostal && tienda.tienda.codPostal.includes(this.filtroCodPostal))
-          : true);
-
-      if (coincideCodPostal) {
-        tiendas.push(tienda);
+    getMarcaColorClass(codigoPostalDiferencia, enviaOnline) {
+      if (codigoPostalDiferencia === 0) {
+        return 'marca-blanca';
+      } else if (codigoPostalDiferencia === 1) {
+        return 'marca-amarilla';
+      } else if (codigoPostalDiferencia > 1 && enviaOnline) {
+        return 'marca-roja';
+      } else {
+        return 'marca-otro-color';
       }
     }
-  });
-
-  const tiendasOrdenadas = tiendas.sort((a, b) => {
-    const precioA = parseFloat(
-      this.precioPorKilogramo(a.producto.precio, a.producto.peso)
-    );
-    const precioB = parseFloat(
-      this.precioPorKilogramo(b.producto.precio, b.producto.peso)
-    );
-
-    return precioA - precioB;
-  });
-
-  return tiendasOrdenadas.map((tienda) => {
-    const codigoPostalDiferencia = this.codigoPostalDiferencia(tienda.tienda.codPostal);
-    tienda.marcaColorClass = this.getMarcaColorClass(codigoPostalDiferencia, tienda.enviaOnline);
-    return tienda;
-  });
-},
-
-codigoPostalDiferencia(codPostal) {
-  if (codPostal === this.filtroCodPostal) {
-    return 0;
-  } else if (codPostal && this.filtroCodPostal && codPostal.includes(this.filtroCodPostal)) {
-    return 1;
-  } else {
-    return 2;
-  }
-},
-
-getMarcaColorClass(codigoPostalDiferencia, enviaOnline) {
-  if (codigoPostalDiferencia === 0) {
-    return 'marca-blanca';
-  } else if (codigoPostalDiferencia === 1) {
-    return 'marca-amarilla';
-  } else if (codigoPostalDiferencia > 1 && enviaOnline) {
-    return 'marca-roja';
-  } else {
-    return 'marca-otro-color';
-  }
-}
 
   },
   created() {
@@ -371,7 +382,8 @@ getMarcaColorClass(codigoPostalDiferencia, enviaOnline) {
 
 .filtro {
   margin-bottom: 20px;
-  background-color: rgb(255, 235, 205);;
+  background-color: rgb(255, 235, 205);
+  ;
 }
 
 .img-thumbnail {
@@ -462,10 +474,11 @@ getMarcaColorClass(codigoPostalDiferencia, enviaOnline) {
   border-radius: 5px;
   font-weight: bold;
 }
-.card{
-  background-color:  rgb(255, 247, 234);
+
+.card {
+  background-color: rgb(255, 247, 234);
 }
-.modal-content{
-  background-color:lemonchiffon
-}
-</style>
+
+.modal-content {
+  background-color: lemonchiffon
+}</style>

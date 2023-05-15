@@ -199,6 +199,7 @@
 import { defineComponent, ref, computed, watch, onMounted } from "vue";
 import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
+import { postEntidad } from "@/components/stores/api-service.js";
 
 export default defineComponent({
   components: {},
@@ -240,8 +241,17 @@ export default defineComponent({
     volver() {
       this.$router.push("/blancas");
     },
+    showAlert() {
+      alert("Producto agregado con éxito.");
+    },
+    showAlertError() {
+      alert("Error al guardar el producto. Intente de nuevo.");
+    },
+    mounted() {
+      this.productosStore.cargarProductos();
+    },
 
-    onSubmit() {
+    async onSubmit() {
       const nuevoProducto = {
         nombre: this.nombre,
         marca: this.marca,
@@ -265,6 +275,14 @@ export default defineComponent({
       this.imagen = "";
       this.barrasOriginal = "";
       this.codTienda = "";
+      try {
+        await postEntidad(nuevoProducto);
+        this.showAlert();
+        this.eleccionServicio = null;
+      } catch (error) {
+        console.error("Error al guardar la reserva en la API:", error);
+        this.showAlertError();
+      }
     },
     onImageChange(event) {
       this.imagen = URL.createObjectURL(event.target.files[0]);

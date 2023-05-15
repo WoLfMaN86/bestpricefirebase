@@ -106,6 +106,7 @@
 <script>
 import { defineComponent } from "vue";
 import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
+import { postEntidad } from "@/components/stores/api-service";
 
 export default defineComponent({
   components: {},
@@ -134,7 +135,7 @@ export default defineComponent({
     volver() {
       this.$router.push("/tiendas");
     },
-    onSubmit() {
+    async onSubmit() {
       const nuevaTienda = {
         codTienda: this.codTienda,
         nombre: this.nombre,
@@ -149,6 +150,14 @@ export default defineComponent({
       this.direccion = "";
       this.telefono = "";
       this.codPostal = "";
+      try {
+        await postEntidad(nuevaTienda);
+        this.showAlert();
+        this.eleccionServicio = null;
+      } catch (error) {
+        console.error("Error al guardar la reserva en la API:", error);
+        this.showAlertError();
+      }
     },
   },
 });
