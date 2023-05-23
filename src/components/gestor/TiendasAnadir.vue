@@ -1,3 +1,91 @@
+
+<script>
+import { defineComponent } from "vue";
+import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
+
+export default defineComponent({
+  components: {},
+  data() {
+    return {
+      codTienda: "",
+      nombre: "",
+      tipo: "fisica",
+      direccion: "",
+      envio: "",
+      minimo: "",
+      telefono: "",
+      codPostal: [],
+      tiendasStore: usaTiendasStore(),
+    };
+  },
+  computed: {
+    incompleto() {
+      if (this.tipo === "fisica") {
+        return (
+          !this.codTienda ||
+          !this.nombre ||
+          !this.direccion ||
+          !this.telefono ||
+          !this.isValidCodPostal(this.codPostal)
+        );
+      } else if (this.tipo === "online") {
+        return (
+          !this.codTienda ||
+          !this.nombre ||
+          !this.envio ||
+          this.minimo === 0 ||
+          !this.telefono ||
+          !this.isValidCodPostal(this.codPostal)
+        );
+      } else {
+        return true;
+      }
+    },
+  },
+  methods: {
+    isValidCodPostal(codPostal) {
+      for (let codigo of codPostal) {
+        if (!/^\d{5}$/.test(codigo)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    volver() {
+      this.$router.push("/tiendas");
+    },
+    onSubmit() {
+      const nuevaTienda = {
+        codTienda: this.codTienda,
+        nombre: this.nombre,
+        tipo: this.tipo,
+        direccion: this.direccion,
+        envio: this.envio,
+        minimo: this.minimo,
+        telefono: this.telefono,
+        codPostal: this.codPostal,
+      };
+      this.tiendasStore.agregarTienda(nuevaTienda);
+
+      this.codTienda = "";
+      this.nombre = "";
+      this.tipo = "fisica";
+      this.direccion = "";
+      this.envio = "";
+      this.minimo = "";
+      this.telefono = "";
+      this.codPostal = [];
+    },
+    addCodPostal() {
+      this.codPostal.push("");
+    },
+    removeCodPostal(index) {
+      this.codPostal.splice(index, 1);
+    },
+  },
+});
+</script>
+
 <template>
   <div class="container">
     <div class="col-md-12 mx-auto">
@@ -33,6 +121,13 @@
             <small class="form-text text-muted">Ejemplo: MercaDonDon</small>
           </div>
           <div class="form-control">
+            <label for="tipo" class="label">Tipo:</label>
+            <select id="tipo" class="input" v-model="tipo" required>
+              <option value="fisica">Física</option>
+              <option value="online">Online</option>
+            </select>
+          </div>
+          <div v-if="tipo === 'fisica'" class="form-control">
             <label for="direccion" class="label">Dirección:</label>
             <input
               id="direccion"
@@ -43,11 +138,34 @@
             />
             <small class="form-text text-muted">Ejemplo: Calle falsa 123</small>
           </div>
+          <div v-if="tipo === 'online'" class="form-control">
+            <label for="envio" class="label">Gastos de envío:</label>
+            <input
+              id="envio"
+              type="number"
+              class="input"
+              v-model="envio"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: 3.99</small>
+          </div>
+          <div v-if="tipo === 'online'" class="form-control">
+            <label for="minimo" class="label">Compra mínima para envío gratuito:</label>
+            <input
+              id="minimo"
+              type="number"
+              step="1"
+              class="input"
+              v-model="minimo"
+              required
+            />
+            <small class="form-text text-muted">Ejemplo: 50 </small>
+          </div>
           <div class="form-control">
             <label for="telefono" class="label">Teléfono:</label>
             <input
               id="telefono"
-              type="tel"
+              type="number"
               class="input"
               v-model="telefono"
               required
@@ -56,21 +174,24 @@
           </div>
           <div class="form-control">
             <label for="codPostal" class="label">Código Postal:</label>
-            <input
-              id="codPostal"
-              type="text"
-              class="input"
-              v-model="codPostal"
-              required
-            />
-            <small class="form-text text-muted">Ejemplo: 47004</small>
+            <div class="codPostalContainer">
+              <div v-for="(cod, index) in codPostal" :key="index" class="codPostalItem">
+                <input
+                  type="number"
+                  class="input codPostalInput"
+                  v-model="codPostal[index]"
+                  required
+                />
+                <button type="button" class="btn btn-remove" @click="removeCodPostal(index)">
+                  X
+                </button>
+              </div>
+              <button type="button" class="btn btn-add" @click="addCodPostal">
+                Agregar Código Postal
+              </button>
+            </div>
           </div>
-          <button
-            type="submit"
-            class="btn btn-primary"
-            @click="onSubmit"
-            :disabled="Incompleto"
-          >
+          <button type="submit" class="btn btn-primary" :disabled="incompleto">
             Agregar Tienda
           </button>
         </form>
@@ -87,14 +208,30 @@
             <div class="col-md-4">{{ tienda.nombre }}</div>
           </div>
           <div class="row">
-            <div class="col-md-2"><strong>Dirección:</strong></div>
-            <div class="col-md-4">{{ tienda.direccion }}</div>
-            <div class="col-md-2"><strong>Teléfono:</strong></div>
-            <div class="col-md-4">{{ tienda.telefono }}</div>
+            <div v-if="tienda.tipo === 'fisica'" class="col-md-2">
+              <strong>Dirección:</strong>
+            </div>
+            <div v-if="tienda.tipo === 'fisica'" class="col-md-4">
+              {{ tienda.direccion }}
+            </div>
+            <div v-if="tienda.tipo === 'online'" class="col-md-2">
+              <strong>Envío:</strong>
+            </div>
+            <div v-if="tienda.tipo === 'online'" class="col-md-4">
+              {{ tienda.envio }}
+            </div>
+            <div v-if="tienda.tipo === 'online'" class="col-md-2">
+              <strong>Mínimo:</strong>
+            </div>
+            <div v-if="tienda.tipo === 'online'" class="col-md-4">
+              {{ tienda.minimo }}
+            </div>
           </div>
           <div class="row">
+            <div class="col-md-2"><strong>Teléfono:</strong></div>
+            <div class="col-md-4">{{ tienda.telefono }}</div>
             <div class="col-md-2"><strong>Código Postal:</strong></div>
-            <div class="col-md-4">{{ tienda.codPostal }}</div>
+            <div class="col-md-4">{{ tienda.codPostal.join(", ") }}</div>
           </div>
           <hr />
         </div>
@@ -103,65 +240,6 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
-import { postEntidad } from "@/components/stores/api-service";
-
-export default defineComponent({
-  components: {},
-  data() {
-    return {
-      codTienda: "",
-      nombre: "",
-      direccion: "",
-      telefono: "",
-      codPostal: "",
-      tiendasStore: usaTiendasStore(),
-    };
-  },
-  computed: {
-    Incompleto() {
-      return (
-        !this.codTienda ||
-        !this.nombre ||
-        !this.direccion ||
-        !this.telefono ||
-        !this.codPostal
-      );
-    },
-  },
-  methods: {
-    volver() {
-      this.$router.push("/tiendas");
-    },
-    async onSubmit() {
-      const nuevaTienda = {
-        codTienda: this.codTienda,
-        nombre: this.nombre,
-        direccion: this.direccion,
-        telefono: this.telefono,
-        codPostal: this.codPostal,
-      };
-      this.tiendasStore.agregarTienda(nuevaTienda);
-
-      this.codTienda = "";
-      this.nombre = "";
-      this.direccion = "";
-      this.telefono = "";
-      this.codPostal = "";
-      try {
-        await postEntidad(nuevaTienda);
-        this.showAlert();
-        this.eleccionServicio = null;
-      } catch (error) {
-        console.error("Error al guardar la reserva en la API:", error);
-        this.showAlertError();
-      }
-    },
-  },
-});
-</script>
 
 <style scoped>
 .container {
@@ -172,17 +250,12 @@ export default defineComponent({
   justify-content: space-between;
 }
 
-.title {
-  font-size: 24px;
-  text-align: center;
-  width: 100%;
-  margin-bottom: 20px;
-}
 .titulo {
   text-align: center;
   margin-top: 40px;
   background-color: blanchedalmond;
 }
+
 .row {
   display: flex;
   flex-direction: row;
@@ -201,15 +274,6 @@ export default defineComponent({
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-}
-.form-control2 {
-  margin-bottom: 10px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
 }
 
 .label {
@@ -238,28 +302,60 @@ export default defineComponent({
   background-color: #3e8e41;
 }
 
-.form-control-file {
-  margin-top: 10px;
+
+.codPostalContainer {
+  display: flex;
+  flex-direction: column;
 }
 
-.img-thumbnail {
-  margin-top: 10px;
-  max-width: 100%;
-  height: auto;
+.codPostalItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
 }
+
+.btn-add {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-remove {
+  padding: 5px 8px;
+  font-size: 14px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-remove:hover {
+  background-color: #c82333;
+}
+
+
 .btn-volver {
-  padding: 5px 10px;
-  font-size: 21px;
+  padding: 10px;
+  font-size: 16px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-
-  margin-left: 100px;
 }
 
 .btn-volver:hover {
-  background-color: #0069d9;
+  background-color: #0056b3;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 </style>

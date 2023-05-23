@@ -1,3 +1,91 @@
+
+<script>
+import { defineComponent } from "vue";
+import { usaBlancasStore } from "@/components/stores/blancasStore.js";
+import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
+
+export default defineComponent({
+  name: "BlancasEditar",
+  props: {
+    producto: {
+      type: Object,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      productosStore: usaBlancasStore(),
+      tiendasStore: usaTiendasStore(),
+      productoEditado: { ...this.producto },
+      codigoExistente: false,
+      similarSearch: "",
+      similarProducts: [],
+    };
+  },
+  computed: {
+    incompleto() {
+      return (
+        !this.productoEditado.nombre ||
+        !this.productoEditado.marca ||
+        !this.productoEditado.peso ||
+        !this.productoEditado.barras ||
+        !this.productoEditado.categoria ||
+        !this.productoEditado.imagen
+      );
+    },
+  },
+  methods: {
+    guardarProducto() {
+      const index = this.productosStore.buscarIndiceProducto(
+        this.productoEditado.barras
+      );
+      this.productosStore.actualizarProducto(index, this.productoEditado);
+      console.log(
+        `Actualizando producto marca blanca ${this.productoEditado.nombre}`
+      );
+      this.$emit("cancel");
+    },
+    searchSimilar() {
+      if (this.similarSearch === "") {
+        this.similarProducts = [];
+      } else {
+        const searchQuery = this.similarSearch.toLowerCase();
+        const filteredProducts = this.productosStore.productos.filter(
+          (producto) =>
+            producto.nombre.toLowerCase().includes(searchQuery) ||
+            producto.marca.toLowerCase().includes(searchQuery) ||
+            producto.descripcion.toLowerCase().includes(searchQuery)
+        );
+        this.similarProducts = filteredProducts;
+      }
+    },
+    agregarSimilar(similar) {
+      if (!this.esSimilarSeleccionado(similar) && similar.barras !== this.productoEditado.barras) {
+        this.productoEditado.similares.push(similar);
+      }
+    },
+    removerSeleccionado(seleccionado) {
+      const index = this.productoEditado.similares.indexOf(seleccionado);
+      if (index > -1) {
+        this.productoEditado.similares.splice(index, 1);
+      }
+    },
+    esSimilarSeleccionado(similar) {
+      return this.productoEditado.similares.some(
+        (seleccionado) => seleccionado.barras === similar.barras
+      );
+    },
+  },
+  watch: {
+    "productoEditado.barras"(newVal) {
+      this.codigoExistente = this.productosStore.productos.some(
+        (producto) => producto.barras === newVal
+      );
+    },
+  },
+});
+</script>
+
 <template>
   <div class="container">
     <h2 class="title">Editar Producto Marca Blanca</h2>
@@ -36,17 +124,6 @@
             />
           </div>
           <div class="form-control">
-            <label for="precio" class="label">Precio:</label>
-            <input
-              id="precio"
-              type="number"
-              step="0.01"
-              class="input"
-              v-model="productoEditado.precio"
-              required
-            />
-          </div>
-          <div class="form-control">
             <label for="barras" class="label">Código de Barras:</label>
             <input
               id="barras"
@@ -55,11 +132,15 @@
               class="input"
               v-model="productoEditado.barras"
               required
-              length="13"
+              maxlength="13"
+              :disabled="true"
             />
+            <small>
+             Si el código de barras no es correcto debe borrar el producto y crear uno nuevo.
+            </small>
           </div>
           <div class="form-control">
-            <label for="categoria" class="label">Categoria: </label>
+            <label for="categoria" class="label">Categoría:</label>
             <input
               id="categoria"
               type="text"
@@ -69,34 +150,35 @@
             />
           </div>
           <div class="form-control">
-            <label for="barrasOriginal" class="label"
-              >Código de Barras Original:</label
-            >
-            <input
-              id="barrasOriginal"
-              type="number"
-              step="1"
+            <label for="descripcion" class="label">Descripción:</label>
+            <textarea
+              id="descripcion"
               class="input"
-              v-model="productoEditado.barrasOriginal"
-              required
-              length="13"
-            />
+              v-model="productoEditado.descripcion"
+              rows="3"
+            ></textarea>
           </div>
           <div class="form-control">
-            <label for="codTienda" class="label">Código de Tienda:</label>
+            <label for="imagen" class="label">Imagen del producto:</label>
             <input
-              id="codTienda"
+              id="imagen"
               type="text"
               class="input"
-              v-model="productoEditado.codTienda"
+              v-model="productoEditado.imagen"
               required
+            />
+            <img
+              v-if="productoEditado.imagen"
+              :src="productoEditado.imagen"
+              class="img-thumbnail mt-3"
+              style="max-width: 300px"
             />
           </div>
           <div class="button-container">
             <button
               type="submit"
               class="btn btn-primary"
-              :disabled="Incompleto"
+              :disabled="incompleto || codigoExistente"
             >
               Guardar
             </button>
@@ -111,19 +193,45 @@
         </div>
         <div class="col-md-12 col-lg-6 mx-auto">
           <div class="form-control">
-            <label for="imagen" class="label">Imagen del producto:</label>
+            <label for="similares" class="label">Productos similares:</label>
             <input
-              id="imagen"
-              type="file"
-              class="form-control-file"
-              @change="onImageChange"
+              id="similares"
+              type="text"
+              class="input"
+              v-model="similarSearch"
+              @input="searchSimilar"
             />
-            <img
-              v-if="productoEditado.imagen"
-              :src="productoEditado.imagen"
-              class="img-thumbnail mt-3"
-              style="max-width: 300px"
-            />
+            <ul id="similaresList">
+              <li v-for="similar in similarProducts" :key="similar.barras">
+                <div class="similar-item">
+                  <span>
+                    {{ similar.nombre }} - {{ similar.marca }} - {{ similar.barras }} - {{ similar.url }}
+                  </span>
+                  <button
+                    type="button"
+                    @click="agregarSimilar(similar)"
+                    :disabled="esSimilarSeleccionado(similar) || similar.barras === productoEditado.barras"
+                  >
+                    Agregar
+                  </button>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <div class="form-control">
+            <label for="seleccionados" class="label">Productos seleccionados:</label>
+            <ul id="seleccionadosList">
+              <li v-for="seleccionado in productoEditado.similares" :key="seleccionado.barras">
+                <div class="seleccionado-item">
+                  <span>
+                    {{ seleccionado.nombre }} - {{ seleccionado.marca }} - {{ seleccionado.barras }} - {{ seleccionado.url }}
+                  </span>
+                  <button type="button" @click="removerSeleccionado(seleccionado)">
+                    Remover
+                  </button>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -131,55 +239,7 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import { usaBlancasStore } from "@/components/stores/blancasStore.js";
 
-export default defineComponent({
-  name: "BlancasEditar",
-  props: {
-    producto: {
-      type: Object,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      productosStore: usaBlancasStore(),
-      productoEditado: { ...this.producto },
-    };
-  },
-  computed: {
-    Incompleto() {
-      return (
-        !this.productoEditado.nombre ||
-        !this.productoEditado.marca ||
-        !this.productoEditado.peso ||
-        !this.productoEditado.barras ||
-        !this.productoEditado.categoria ||
-        !this.productoEditado.barrasOriginal ||
-        !this.productoEditado.codTienda ||
-        this.productoEditado.barras.toString().length !== 13
-      );
-    },
-  },
-  methods: {
-    guardarProducto() {
-      const index = this.productosStore.buscarIndiceProducto(
-        this.productoEditado.barras
-      );
-      this.productosStore.actualizarProducto(index, this.productoEditado);
-      console.log(
-        `Actualizando producto marca blanca ${this.productoEditado.nombre}`
-      );
-      this.$emit("cancel");
-    },
-    onImageChange(event) {
-      this.productoEditado.imagen = URL.createObjectURL(event.target.files[0]);
-    },
-  },
-});
-</script>
 
 <style scoped>
 .container {
@@ -256,9 +316,24 @@ export default defineComponent({
   max-width: 100%;
   height: auto;
 }
+
 .button-container {
   display: flex;
   justify-content: center;
   gap: 15px;
+}
+
+.similar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.seleccionado-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
 }
 </style>

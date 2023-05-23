@@ -1,0 +1,39 @@
+[
+    {
+      "codTienda": 1001,
+      "barras":8400000088001,
+      "precio": 2.99
+    },
+    {
+      "codTienda": 1002,      
+      "barras": 8400000000001,
+      "precio": 2.50
+    },
+    
+    {
+      "codTienda": 1003,
+      "barras": 8400000000001,
+      "precio": 3.50
+    },
+    {
+        "codTienda": 1001,
+        "barras":8400000000001,
+        "precio": 1.99
+      },
+    {
+      "codTienda": 5001,
+      "barras":8400000089001,
+      "precio": 1.99
+    },
+    {
+      "codTienda": 5002,
+      "barras":8400000088001,
+      "precio": 5.99
+    },
+    {
+      "codTienda": 5003,
+      "barras":8400000000001,
+      "precio": 3.87
+    }
+  ]
+  

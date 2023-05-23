@@ -1,13 +1,3 @@
-<template>
-  <footer class="footer">
-    <div class="container">
-      <p class="text-center">
-        Todos los derechos reservados &copy; {{ currentYear }} BestPrice
-      </p>
-    </div>
-  </footer>
-</template>
-
 <script>
 export default {
   data() {
@@ -17,6 +7,16 @@ export default {
   },
 };
 </script>
+
+<template>
+  <footer class="footer">
+    <div class="container">
+      <p class="text-center">
+        Todos los derechos reservados &copy; {{ currentYear }} BestPrice
+      </p>
+    </div>
+  </footer>
+</template>
 
 <style scoped>
 .footer {

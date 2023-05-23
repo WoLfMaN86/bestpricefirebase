@@ -1,220 +1,265 @@
-<template>
-  <div class="container-fluid">
-    <h2 class="titulo">Lista de productos originales y sus marcas blancas</h2>
-
-    <div
-      class="filtro d-flex flex-row flex-wrap align-items-center justify-content-center"
-    >
-      <div class="form-group mb-2 mr-2">
-        <label for="filtro-marca" class="mr-2">Filtrar por marca blanca:</label>
-        <input
-          type="text"
-          id="filtro-marca"
-          v-model="filtroMarca"
-          class="form-control"
-        />
-      </div>
-      <div class="form-group mb-2 mr-2">
-        <label for="filtro-cat" class="mr-2">Filtrar por categoría:</label>
-        <input
-          type="text"
-          id="filtro-cat"
-          v-model="filtroCategoria"
-          class="form-control"
-        />
-      </div>
-      <div class="form-group mb-2 mr-2">
-        <label for="filtro-tienda" class="mr-2">Filtrar por tienda:</label>
-        <select id="filtro-tienda" v-model="filtroTienda" class="form-control">
-          <option value="">Todas las tiendas</option>
-          <option
-            v-for="tienda in todasTiendas"
-            :key="tienda.codTienda"
-            :value="tienda.codTienda"
-          >
-            {{ tienda.nombre }}
-          </option>
-        </select>
-      </div>
-
-      <div class="form-group mb-2 mr-2">
-        <label for="filtro-codpostal" class="mr-2"
-          >Filtrar por código postal:</label
-        >
-        <input
-          type="text"
-          id="filtro-codpostal"
-          v-model="filtroCodPostal"
-          class="form-control"
-        />
-      </div>
-    </div>
-
-    <div class="row">
-      <div
-        class="col-md-4 mb-4"
-        v-for="(original, index) in originalesFiltrados"
-        :key="index"
-      >
-        <div class="card">
-          <div class="card-body">
-            <img
-              :src="original.imagen"
-              class="card-img-left img-thumbnail"
-              :style="{ width: '100px', height: '100px' }"
-              alt="Producto original"
-            />
-            <h5 class="card-title">{{ original.nombre }}</h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ original.marca }}</h6>
-            <hr />
-            <div
-              v-for="tienda in tiendasOrdenadasPorPrecio(original.barras)"
-              :key="tienda.tienda.codTienda"
-            >
-              <p
-                v-if="!filtroTienda || tienda.tienda.codTienda === filtroTienda"
-              >
-                {{ tienda.producto.marca }} ({{ tienda.tienda.nombre }}) -
-                {{
-                  precioPorKilogramo(
-                    tienda.producto.precio,
-                    tienda.producto.peso
-                  )
-                }}
-                €/Kg<span v-if="tienda.envio" class="text-danger">
-                  + {{ tienda.envio }} € envío</span
-                >
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script>
 import { defineComponent } from "vue";
-import { usaOriginalesStore } from "@/components/stores/originalesStore.js";
-import { usaBlancasStore } from "@/components/stores/blancasStore.js";
-import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
-import { usaTiendaOnlinesStore } from "@/components/stores/tiendaOnlineStore.js";
+import { usaEstanteriaStore } from "@/components/stores/estanteriaStore";
+import { usaTiendasStore } from "@/components/stores/tiendaStore";
+import { usaBlancasStore } from "@/components/stores/blancasStore";
+import PropioEditar from "./PropioEditar.vue";
 
 export default defineComponent({
+  name: "Propio",
+  components: {
+    PropioEditar,
+  },
   data() {
-    const originalesStore = usaOriginalesStore();
-    const productosBlancasStore = usaBlancasStore();
-    const tiendasFisicasStore = usaTiendasStore();
-    const tiendasOnlineStore = usaTiendaOnlinesStore();
-
     return {
-      originales: originalesStore.productos,
-      productosBlanca: productosBlancasStore.productos,
-      tiendasFisicas: tiendasFisicasStore.tiendas,
-      tiendasOnline: tiendasOnlineStore.tiendas,
-      filtroMarca: "",
-      filtroCategoria: "",
-      filtroTienda: "",
-      filtroCodPostal: "",
+      estanteriaStore: usaEstanteriaStore(),
+      tiendaStore: usaTiendasStore(),
+      blancasStore: usaBlancasStore(),
+      tiendas: [],
+      productos: [],
+      editandoProducto: false,
+      productoEditando: null,
     };
   },
-  computed: {
-    todasTiendas() {
-      return this.tiendasFisicas.concat(this.tiendasOnline);
-    },
-    originalesFiltrados() {
-      return this.originales.filter((original) => {
-        const categoriaCoincide = this.filtroCategoria
-          ? original.categoria
-              .toLowerCase()
-              .includes(this.filtroCategoria.toLowerCase())
-          : true;
-
-        const tiendasCoinciden = this.tiendasOrdenadasPorPrecio(
-          original.barras
-        ).some(
-          (tienda) =>
-            this.filtroTienda === "" ||
-            tienda.tienda.codTienda === this.filtroTienda
-        );
-
-        return categoriaCoincide && tiendasCoinciden;
-      });
-    },
+  mounted() {
+    this.tiendas = this.tiendaStore.tiendas;
+    this.productos = this.blancasStore.productos;
+    this.editandoProducto = false;
   },
   methods: {
-    precioPorKilogramo(precio, peso) {
-      return (precio / (peso / 1000)).toFixed(2);
-    },
-    tiendasOrdenadasPorPrecio(barrasOriginal) {
-      const tiendas = [];
+    getProductosPorTienda(codTienda) {
+      const productosTienda = this.estanteriaStore.estanterias.filter(
+        (estanteria) => estanteria.codTienda === codTienda
+      );
 
-      this.productosBlanca.forEach((producto) => {
-        if (
-          producto.barrasOriginal === barrasOriginal &&
-          (this.filtroMarca === "" ||
-            producto.marca
-              .toLowerCase()
-              .includes(this.filtroMarca.toLowerCase()))
-        ) {
-          let tienda = {};
+      return productosTienda.map((estanteria) => {
+        const producto = this.productos.find(
+          (producto) => producto.barras === estanteria.barras
+        );
 
-          tienda.producto = producto;
-
-          const tiendaFisica = this.tiendasFisicas.find(
-            (t) => t.codTienda === producto.codTienda
-          );
-
-          if (tiendaFisica) {
-            tienda.tienda = tiendaFisica;
-          } else {
-            const tiendaOnline = this.tiendasOnline.find(
-              (t) => t.codTienda === producto.codTienda
-            );
-
-            if (tiendaOnline) {
-              tienda.tienda = tiendaOnline;
-              tienda.envio = tiendaOnline.envio;
-            }
-          }
-
-          const coincideCodPostal =
-            this.filtroCodPostal === "" ||
-            (tienda.tienda.codPostal &&
-              tienda.tienda.codPostal.includes(this.filtroCodPostal));
-
-          if (coincideCodPostal) {
-            tiendas.push(tienda);
-          }
+        if (producto) {
+          return {
+            ...producto,
+            precio: estanteria.precio,
+          };
+        } else {
+          return {
+            nombre: "Producto eliminado",
+            marca: "N/A",
+            precio: estanteria.precio,
+            imagen:
+              "https://thumbs.dreamstime.com/b/removed-red-rubber-stamp-over-white-background-88004540.jpg",
+          };
         }
       });
+    },
+    editarProducto(tienda, producto) {
+      const index = this.estanteriaStore.buscarIndiceTiendaBarras(
+        tienda.codTienda,
+        producto.barras,
+        this.estanteriaStore.estanterias
+      );
 
-      return tiendas.sort((a, b) => {
-        const precioA = parseFloat(
-          this.precioPorKilogramo(a.producto.precio, a.producto.peso)
-        );
-        const precioB = parseFloat(
-          this.precioPorKilogramo(b.producto.precio, b.producto.peso)
-        );
+      if (index !== -1) {
+        const asociacion = this.estanteriaStore.estanterias[index];
+        this.productoEditando = {
+          ...producto,
+          codTienda: tienda.codTienda,
+          precio: asociacion.precio,
+        };
+        this.editandoProducto = true;
+      }
+    },
 
-        return precioA - precioB;
-      });
+    eliminarProducto(tienda, producto) {
+      const index = this.estanteriaStore.buscarIndiceTiendaBarras(
+        tienda.codTienda,
+        producto.barras,
+        this.estanteriaStore.estanterias
+      );
+
+      if (index !== -1) {
+        this.estanteriaStore.eliminarEstanteria(index);
+      }
+    },
+    cancelarEdicion() {
+      this.editandoProducto = false;
+      this.productoEditando = null;
+    },
+    actualizarProducto(productoActualizado) {
+      const index = this.estanteriaStore.buscarIndiceTiendaBarras(
+        productoActualizado.codTienda,
+        productoActualizado.barras,
+        this.estanteriaStore.estanterias
+      );
+
+      if (index !== -1) {
+        this.estanteriaStore.actualizarEstanteria(index, {
+          codTienda: productoActualizado.codTienda,
+          barras: productoActualizado.barras,
+          precio: productoActualizado.precio,
+        });
+      }
+
+      this.editandoProducto = false;
+      this.productoEditando = null;
+    },
+    irAPropioAnadir() {
+      this.$router.push("/propio/add");
+    },
+    getTiendaSeleccionada(codTienda) {
+      const tienda = this.tiendas.find(
+        (tienda) => tienda.codTienda === codTienda
+      );
+      return tienda
+        ? { ...tienda, nombre: this.getTiendaNombre(codTienda) }
+        : null;
+    },
+    getTiendaNombre(codTienda) {
+      const tienda = this.tiendas.find(
+        (tienda) => tienda.codTienda === codTienda
+      );
+      return tienda ? tienda.nombre : "";
     },
   },
 });
 </script>
 
+<template>
+  <div>
+    <h2 class="titulo">
+      <span class="titulo-texto">Asociar Tiendas a Productos</span>
+      <button class="btn btn-add" @click="irAPropioAnadir">Añadir Nuevo</button>
+    </h2>
+    <div v-if="!editandoProducto">
+      <div
+        v-for="tienda in tiendas"
+        :key="tienda.codTienda"
+        class="tienda-container card mb-3"
+      >
+        <div class="card-header bg-success text-white">
+          <h3>Tienda: {{ tienda.nombre }}</h3>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li
+            v-for="producto in getProductosPorTienda(tienda.codTienda)"
+            :key="producto.barras"
+            class="producto-container list-group-item"
+          >
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="d-flex align-items-center">
+                  <div class="d-flex flex-column">
+                    <h5 class="card-title text-success">
+                      {{ producto.nombre }}
+                    </h5>
+                    <p class="card-text">{{ producto.marca }}</p>
+                  </div>
+                </div>
+              </div>
+              <p class="card-text precio">Precio: {{ producto.precio }}</p>
+              <img
+                :src="producto.imagen"
+                class="producto-foto"
+                alt="Foto del producto"
+              />
+              <div class="producto-actions">
+                <button
+                  class="btn btn-primary m-2"
+                  @click="editarProducto(tienda, producto)"
+                >
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button
+                  class="btn btn-danger m-2"
+                  @click="eliminarProducto(tienda, producto)"
+                >
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div v-else>
+      <PropioEditar
+        :producto="productoEditando"
+        :tiendaSeleccionada="getTiendaSeleccionada(productoEditando.codTienda)"
+        @cancelar="cancelarEdicion"
+        @actualizar="actualizarProducto"
+      />
+    </div>
+  </div>
+</template>
+
 <style scoped>
-.titulo {
-  text-align: center;
-  margin-top: 40px;
-  background-color: blanchedalmond;
-}
-.img-thumbnail {
-  object-fit: cover;
-  margin-right: 10px;
-}
-.filtro {
+.tienda-container {
+  margin-top: 2vw;
+  margin-left: 2vw;
+  margin-right: 2vw;
+  background-color: #e3fde3;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
+}
+.titulo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 40px;
+  background-color: #e3fde3;
+  padding: 10px;
+}
+
+.titulo-texto {
+  text-align: center;
+  flex: 1;
+}
+
+.tienda-container {
+  margin-bottom: 20px;
+}
+
+.producto-container {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  background-color: #e3fde3;
+  margin-bottom: 10px;
+}
+
+.producto-container p {
+  margin: 0;
+}
+
+.precio {
+  font-weight: bold;
+}
+
+.btn-add {
+  font-size: 21px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.titulo .btn-add {
+  display: flex;
+  align-items: center;
+}
+
+.btn-add:hover {
+  background-color: #0069d9;
+}
+
+.producto-foto {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  object-fit: cover;
 }
 </style>

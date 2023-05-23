@@ -1,8 +1,33 @@
+<script>
+export default {
+  data() {
+    return {
+      filtroNombre: "",
+      navbarOpen: false,
+      dropdownOpen: false,
+    };
+  },
+  methods: {
+    buscarProductos() {
+      this.$router.replace({
+        name: "Bienvenido",
+        query: { filtroNombre: this.filtroNombre },
+      });
+    },
+  },
+};
+</script>
+
 <template>
   <nav class="navbar navbar-expand-lg bd-navbar sticky-top">
     <div class="container-fluid">
       <router-link class="navbar-brand" to="/">
-        <img src="../assets/logoBP.png" alt="BestPrice" width="50" height="50" />
+        <img
+          src="../assets/logoBP.png"
+          alt="BestPrice"
+          width="50"
+          height="50"
+        />
       </router-link>
       <button
         class="navbar-toggler"
@@ -51,36 +76,36 @@
               Gestión
             </a>
             <ul class="dropdown-menu" :class="{ show: dropdownOpen }">
-              <li>
+              <!-- <li>
                 <router-link
                   class="dropdown-item"
                   to="/originales"
                   style="font-weight: bold"
                   >Productos Originales</router-link
                 >
-              </li>
+              </li> -->
               <li>
                 <router-link
                   class="dropdown-item"
                   to="/blancas"
                   style="font-weight: bold"
-                  >Productos Propios</router-link
-                >
+                  >Productos
+                </router-link>
               </li>
               <li>
                 <router-link
                   class="dropdown-item"
                   to="/fisica"
                   style="font-weight: bold"
-                  >Tienda Física</router-link
+                  >Tiendas</router-link
                 >
               </li>
               <li>
                 <router-link
                   class="dropdown-item"
-                  to="/online"
+                  to="/propio"
                   style="font-weight: bold"
-                  >Tienda Online</router-link
+                  >Estanteria</router-link
                 >
               </li>
               <li>
@@ -96,7 +121,7 @@
             type="search"
             placeholder="Buscador"
             aria-label="Search"
-            v-model="filtroNombreOriginal"
+            v-model="filtroNombre"
           />
           <button class="btn btn-outline-success" type="submit">Buscar</button>
         </form>
@@ -105,29 +130,7 @@
   </nav>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      filtroNombreOriginal: "",
-      navbarOpen: false,
-      dropdownOpen: false,
-    };
-  },
-  methods: {
-    buscarProductos() {
-  this.$router.replace({
-    name: "Bienvenido",
-    query: { filtroNombreOriginal: this.filtroNombreOriginal },
-  });
-    },}}
-
-</script>
-
-
-
 <style scoped>
-
 nav {
   background: linear-gradient(to right, #09e05f, #f78f2d);
   color: #fff;

@@ -1,3 +1,45 @@
+<script>
+import { defineComponent } from "vue";
+import { usaCodPostalStore } from "@/components/stores/codPostal.js";
+
+export default defineComponent({
+  name: "Home",
+  data() {
+    return {
+      postalCode: "",
+      isNavigating: false,
+      codPostalStore: usaCodPostalStore(),
+    };
+  },
+  computed: {
+    isValidPostalCode() {
+      return this.postalCode.length === 5 && /^\d+$/.test(this.postalCode);
+    },
+  },
+  methods: {
+    submitForm() {
+      if (this.isValidPostalCode) {
+        const nuevoCodigo = {
+          codigo: this.postalCode,
+        };
+        this.codPostalStore.setCodPostal(nuevoCodigo);
+        this.isNavigating = true;
+        this.navegarBienvenidos();
+      }
+    },
+    navegarBienvenidos() {
+      this.$router.replace({ name: "Bienvenido" });
+      this.isNavigating = false;
+    },
+  },
+  mounted() {
+    if (this.codPostalStore.codPostal) {
+      this.$router.replace({ name: "Bienvenido" });
+    }
+  },
+});
+</script>
+
 <template>
   <div class="home container" v-if="!codPostalStore.codPostal">
     <div class="row">
@@ -43,48 +85,6 @@
     <router-view></router-view>
   </div>
 </template>
-
-<script>
-import { defineComponent } from "vue";
-import { usaCodPostalStore } from "@/components/stores/codPostal.js";
-
-export default defineComponent({
-  name: "Home",
-  data() {
-    return {
-      postalCode: "",
-      isNavigating: false,
-      codPostalStore: usaCodPostalStore(),
-    };
-  },
-  computed: {
-    isValidPostalCode() {
-      return this.postalCode.length === 5 && /^\d+$/.test(this.postalCode);
-    },
-  },
-  methods: {
-    submitForm() {
-      if (this.isValidPostalCode) {
-        const nuevoCodigo = {
-          codigo: this.postalCode,
-        };
-        this.codPostalStore.setCodPostal(nuevoCodigo);
-        this.isNavigating = true;
-        this.navegarBienvenidos();
-      }
-    },
-    navegarBienvenidos() {
-      this.$router.replace({ name: "Bienvenido" });
-      this.isNavigating = false;
-    },
-  },
-  mounted() {
-    if (this.codPostalStore.codPostal) {
-      this.$router.replace({ name: "Bienvenido" });
-    }
-  },
-});
-</script>
 
 <style scoped>
 .home {

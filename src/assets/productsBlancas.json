@@ -1,293 +1,130 @@
 [
   {
     "nombre": "Aceite Oliva",
-    "marca": "LaHacienda",
-    "peso": "1000",
-    "precio": 1.0,
-    "barras": 8455000000009,
-    "imagen": "/imagenes/oliva.jpg",
+    "marca": "Carbonell",
+    "peso": 1000,
+   
+    "barras": 8400000000001,
+    "imagen": "https://imageskomparing1.static-k.com/products/ERO6984447.jpg",
     "categoria": "Aceite",
-    "barrasOriginal": 8400000000001,
-    "codTienda": "1001",
-    "descripcion": "El aceite LaHacienda es el mejor aceite de todo el mundo"
-  },
-  {
-    "nombre": "Arroz",
-    "marca": "LaHacienda",
-    "peso": "1000",
-    "precio": 1.5,
-    "barras": 8488003400088,
-    "imagen": "/imagenes/arroz.jpg",
-    "categoria": "Arroz",
-    "barrasOriginal": 8400000000002,
-    "codTienda": "1001",
-    "descripcion": "El arroz LaHacienda es el mejor aceite de todo el mundo"
-  },
-  {
-    "nombre": "Aceite Girasol",
-    "marca": "LaHacienda",
-    "peso": "1000",
-    "precio": 3.0,
-    "barras": 8454003400003,
-    "imagen": "/imagenes/girasol.jpg",
-    "categoria": "Aceite",
-    "barrasOriginal": 8400000000003,
-    "codTienda": "1001",
-    "descripcion": "El aceite girasol LaHacienda es el mejor aceite de todo el mundo"
-  },
-  {
-    "nombre": "Leche Entera",
-    "marca": "LaHacienda",
-    "peso": "1000",
-    "precio": 2.8,
-    "barras": 8400034004445,
-    "imagen": "/imagenes/leche.jpg",
-    "categoria": "Leche",
-    "barrasOriginal": 8400000000004,
-    "codTienda": "1001",
-    "descripcion": "La leche LaHacienda es la mejor"
-  },
-  {
-    "nombre": "Pan de molde",
-    "marca": "LaHacienda",
-    "peso": "650",
-    "precio": 5.5,
-    "barras": 8403400001236,
-    "imagen": "/imagenes/bimbo.jpg",
-    "categoria": "Pan",
-    "barrasOriginal": 8400000000005,
-    "codTienda": "1001",
-    "descripcion": "El pan LaHacienda es el mejor"
-  },
-  {
-    "nombre": "Aceite Oliva",
-    "marca": "Infa",
-    "peso": "1000",
-    "precio": 0.9,
-    "barras": 8445000000049,
-    "imagen": "/imagenes/oliva.jpg",
-    "categoria": "Aceite",
-    "barrasOriginal": 8400000000001,
-    "codTienda": "1002",
-    "descripcion": "El aceite Infa es el mejor"
-  },
-  {
-    "nombre": "Arroz",
-    "marca": "Infa",
-    "peso": "1000",
-    "precio": 1.3,
-    "barras": 8488770000078,
-    "imagen": "/imagenes/arroz.jpg",
-    "categoria": "Arroz",
-    "barrasOriginal": 8400000000002,
-    "codTienda": "1002",
-    "descripcion": "El arroz Infa es el mejor"
-  },
-  {
-    "nombre": "Aceite Oliva",
-    "marca": "Alidepende",
-    "peso": "2000",
-    "precio": 4.0,
-    "barras": 8444000000002,
-    "imagen": "/imagenes/oliva.jpg",
-    "categoria": "Aceite",
-    "barrasOriginal": 8400000000001,
-    "codTienda": "1003",
-    "descripcion": "El aceite Alidepende es el mejor"
-  },
-  {
-    "nombre": "Arroz",
-    "marca": "Alidepende",
-    "peso": "1500",
-    "precio": 1.0,
-    "barras": 8487560000081,
-    "imagen": "/imagenes/arroz.jpg",
-    "categoria": "Arroz",
-    "barrasOriginal": 8400000000002,
-    "codTienda": "1003",
-    "descripcion": "El arroz Alidepende es el mejor"
-  },
-  {
-    "nombre": "Aceite Girasol",
-    "marca": "Alidepende",
-    "peso": "1000",
-    "precio": 3.0,
-    "barras": 8445000000003,
-    "imagen": "/imagenes/girasol.jpg",
-    "categoria": "Aceite",
-    "barrasOriginal": 8400000000003,
-    "codTienda": "1003",
-    "descripcion": "El aceite Girasol Alidepende es el mejor"
-  },
-  {
-    "nombre": "Leche Entera",
-    "marca": "Alidepende",
-    "peso": "1000",
-    "precio": 2.8,
-    "barras": 8400000004444,
-    "imagen": "/imagenes/leche.jpg",
-    "categoria": "Leche",
-    "barrasOriginal": 8400000000004,
-    "codTienda": "1003",
-    "descripcion": "La leche Alidepende es el mejor"
-  },
-  {
-    "nombre": "Pan de molde",
-    "marca": "Alidepende",
-    "peso": "650",
-    "precio": 5.5,
-    "barras": 8400000001235,
-    "imagen": "/imagenes/bimbo.jpg",
-    "categoria": "Pan",
-    "barrasOriginal": 8400000000005,
-    "codTienda": "1003",
-    "descripcion": "El pan Alidepende es el mejor"
-  },
-  {
-    "nombre": "Aceite Oliva",
-    "marca": "One-Dia",
-    "peso": "1000",
-    "precio": 1.4,
-    "barras": 8455007000009,
-    "imagen": "/imagenes/oliva.jpg",
-    "categoria": "Aceite",
-    "barrasOriginal": 8400000000001,
-    "codTienda": "5001",
-    "descripcion": "El aceite de la tienda online del DIA es el mejor"
-  },
-  {
-    "nombre": "Arroz",
-    "marca": "One-Dia",
-    "peso": "1000",
-    "precio": 1.2,
-    "barras": 8488073400088,
-    "imagen": "/imagenes/arroz.jpg",
-    "categoria": "Arroz",
-    "barrasOriginal": 8400000000002,
-    "codTienda": "5001",
-    "descripcion": "El arroz de la tienda online del DIA es el mejor"
-  },
-  {
-    "nombre": "Aceite Girasol",
-    "marca": "One-Dia",
-    "peso": "1000",
-    "precio": 3.2,
-    "barras": 8454073400003,
-    "imagen": "/imagenes/girasol.jpg",
-    "categoria": "Aceite",
-    "barrasOriginal": 8400000000003,
-    "codTienda": "5001",
-    "descripcion": "El aceite de girasol de la tienda online del DIA es el mejor"
-  },
-  {
-    "nombre": "Leche Entera",
-    "marca": "One-Dia",
-    "peso": "1000",
-    "precio": 2.4,
-    "barras": 8400734004445,
-    "imagen": "/imagenes/leche.jpg",
-    "categoria": "Leche",
-    "barrasOriginal": 8400000000004,
-    "codTienda": "5001",
-    "descripcion": "La leche de la tienda online del DIA es el mejor"
-  },
-  {
-    "nombre": "Pan de molde",
-    "marca": "One-Dia",
-    "peso": "650",
-    "precio": 5.0,
-    "barras": 8403470001236,
-    "imagen": "/imagenes/bimbo.jpg",
-    "categoria": "Pan",
-    "barrasOriginal": 8400000000005,
-    "codTienda": "5001",
-    "descripcion": "El pan de la tienda online del DIA es el mejor"
+ 
+    "descripcion": "Aceite Carbonell", 
+    
+    "similares": [
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "One-Carrefour",
+        "barras": 8400000088001,
+        "url": "https://www.aceite1.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "One-Dia",
+        "barras": 8400000089001,
+        "url": "https://www.aceite2.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "LaHacienda",
+        "barras": 8400000098001,
+        "url": "https://www.aceite3.com"
+      }
+    ]
   },
   {
     "nombre": "Aceite Oliva",
     "marca": "One-Carrefour",
-    "peso": "1000",
-    "precio": 1.9,
-    "barras": 8445008000049,
-    "imagen": "/imagenes/oliva.jpg",
+    "peso": 1000,
+  
+    "barras": 8400000088001,
+    "imagen": "https://imageskomparing.static-k.com/products/CAR520660335.jpg",
     "categoria": "Aceite",
-    "barrasOriginal": 8400000000001,
-    "codTienda": "5002",
-    "descripcion": "El aceite de la tienda online del Carrefour es el mejor"
-  },
-  {
-    "nombre": "Arroz",
-    "marca": "One-Carrefour",
-    "peso": "1000",
-    "precio": 1.85,
-    "barras": 8488770800078,
-    "imagen": "/imagenes/arroz.jpg",
-    "categoria": "Arroz",
-    "barrasOriginal": 8400000000002,
-    "codTienda": "5002",
-    "descripcion": "El arroz de la tienda online del Carrefour es el mejor"
+    
+    "descripcion": "", 
+    
+    "similares": [
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "Carbonell",
+        "barras": 8400000000001,
+        "url": "https://www.aceite1.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "One-Dia",
+        "barras": 8400000089001,
+        "url": "https://www.aceite2.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "LaHacienda",
+        "barras": 8400000098001,
+        "url": "https://www.aceite3.com"
+      }
+    ]
   },
   {
     "nombre": "Aceite Oliva",
-    "marca": "One-Alcampo",
-    "peso": "1500",
-    "precio": 3.0,
-    "barras": 8444005000002,
-    "imagen": "/imagenes/oliva.jpg",
+    "marca": "One-Dia",
+    "peso": 1000,
+ 
+    "barras": 8400000089001,
+    "imagen": "https://imageskomparing2.static-k.com/products/FRO5875.jpg",
     "categoria": "Aceite",
-    "barrasOriginal": 8400000000001,
-    "codTienda": "5003",
-    "descripcion": "El aceite de la tienda online del Alcampo es el mejor"
+    
+    "descripcion": "", 
+    
+    "similares": [
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "Carbonell",
+        "barras": 8400000000001,
+        "url": "https://www.aceite1.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "One-Carrefour",
+        "barras": 8400000088001,
+        "url": "https://www.aceite2.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "LaHacienda",
+        "barras": 8400000098001,
+        "url": "https://www.aceite3.com"
+      }
+    ]
   },
   {
-    "nombre": "Arroz",
-    "marca": "One-Alcampo",
-    "peso": "1500",
-    "precio": 1.3,
-    "barras": 8487565000081,
-    "imagen": "/imagenes/arroz.jpg",
-    "categoria": "Arroz",
-    "barrasOriginal": 8400000000002,
-    "codTienda": "5003",
-    "descripcion": "El arroz de la tienda online del Alcampo es el mejor"
-  },
-  {
-    "nombre": "Aceite Girasol",
-    "marca": "One-Alcampo",
-    "peso": "1000",
-    "precio": 3.4,
-    "barras": 8445050000003,
-    "imagen": "/imagenes/girasol.jpg",
+    "nombre": "Aceite Oliva",
+    "marca": "LaHacienda",
+    "peso": 1000,
+ 
+    "barras": 8400000098001,
+    "imagen": "https://imageskomparing1.static-k.com/products/FRO22209.jpg",
     "categoria": "Aceite",
-    "barrasOriginal": 8400000000003,
-    "codTienda": "5003",
-    "descripcion": "El aceite de girasol de la tienda online del Alcampo es el mejor"
-  },
-  {
-    "nombre": "Leche Entera",
-    "marca": "One-Alcampo",
-    "peso": "1000",
-    "precio": 2.2,
-    "barras": 8400050004444,
-    "imagen": "/imagenes/leche.jpg",
-    "categoria": "Leche",
-    "barrasOriginal": 8400000000004,
-    "codTienda": "5003",
-    "descripcion": "La leche de la tienda online del Alcampo es el mejor"
-  },
-  {
-    "nombre": "Pan de molde",
-    "marca": "One-Alcampo",
-    "peso": "650",
-    "precio": 4.5,
-    "barras": 8400050001235,
-    "imagen": "/imagenes/bimbo.jpg",
-    "categoria": "Pan",
-    "barrasOriginal": 8400000000005,
-    "codTienda": "5003",
-    "descripcion": "El pan de molde de la tienda online del Alcampo es el mejor"
+    
+    "descripcion": "", 
+    
+    "similares": [
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "Carbonell",
+        "barras": 8400000000001,
+        "url": "https://www.aceite1.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "One-Carrefour",
+        "barras": 8400000088001,
+        "url": "https://www.aceite2.com"
+      },
+      {
+        "nombre": "Aceite Oliva",
+        "marca": "One-Dia",
+        "barras": 8400000089001,
+        "url": "https://www.aceite3.com"
+      }
+    ]
   }
 ]
-
-
-   

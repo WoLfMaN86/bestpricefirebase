@@ -1,3 +1,69 @@
+<script>
+import { defineComponent } from "vue";
+import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
+
+export default defineComponent({
+  props: {
+    tienda: Object,
+  },
+  data() {
+    return {
+      tiendasStore: usaTiendasStore(),
+      codPostal: [],
+    };
+  },
+  computed: {
+    Incompleto() {
+      if (this.tienda.tipo === "fisica") {
+        return (
+          !this.tienda.codTienda ||
+          !this.tienda.nombre ||
+          !this.tienda.direccion ||
+          !this.tienda.telefono ||
+          !this.isValidCodPostal(this.codPostal)
+        );
+      } else if (this.tienda.tipo === "online") {
+        return (
+          !this.tienda.codTienda ||
+          !this.tienda.nombre ||
+          !this.tienda.envio ||
+          this.tienda.minimo === 0 ||
+          !this.tienda.telefono ||
+          !this.isValidCodPostal(this.codPostal)
+        );
+      } else {
+        return true;
+      }
+    },
+  },
+  mounted() {
+    this.codPostal = [...this.tienda.codPostal];
+  },
+  methods: {
+    isValidCodPostal(codPostal) {
+      for (let codigo of codPostal) {
+        if (!/^\d{5}$/.test(codigo)) {
+          return false;
+        }
+      }
+      return true;
+    },
+    addCodPostal() {
+      this.codPostal.push("");
+    },
+    removeCodPostal(index) {
+      this.codPostal.splice(index, 1);
+    },
+    updateTienda() {
+      this.tienda.codPostal = [...this.codPostal];
+      const index = this.tiendasStore.buscarIndiceTienda(this.tienda.codTienda);
+      this.tiendasStore.actualizarTienda(index, this.tienda);
+      this.$emit("update");
+    },
+  },
+});
+</script>
+
 <template>
   <div class="container">
     <h2 class="title">Editar Tienda</h2>
@@ -9,26 +75,50 @@
           type="text"
           class="input"
           v-model="tienda.nombre"
-          required
+          readonly
         />
       </div>
       <div class="form-control">
         <label for="codTienda" class="label">Código:</label>
         <input
           id="codTienda"
-          type="text"
+          type="number"
           class="input"
           v-model="tienda.codTienda"
           readonly
         />
       </div>
-      <div class="form-control">
+      <div v-if="tienda.tipo === 'fisica'" class="form-control">
         <label for="direccion" class="label">Dirección:</label>
         <input
           id="direccion"
           type="text"
           class="input"
           v-model="tienda.direccion"
+          required
+        />
+      </div>
+      <div v-if="tienda.tipo === 'online'" class="form-control">
+        <label for="envio" class="label">Gastos de envío:</label>
+        <input
+          id="envio"
+          type="number"
+          step="0.01"
+          class="input"
+          v-model="tienda.envio"
+          required
+        />
+      </div>
+      <div v-if="tienda.tipo === 'online'" class="form-control">
+        <label for="minimo" class="label"
+          >Compra mínima para envío gratuito:</label
+        >
+        <input
+          id="minimo"
+          type="number"
+          step="0.01"
+          class="input"
+          v-model="tienda.minimo"
           required
         />
       </div>
@@ -44,13 +134,30 @@
       </div>
       <div class="form-control">
         <label for="codPostal" class="label">Código Postal:</label>
-        <input
-          id="codPostal"
-          type="text"
-          class="input"
-          v-model="tienda.codPostal"
-          required
-        />
+        <div class="codPostalContainer">
+          <div
+            v-for="(cod, index) in codPostal"
+            :key="index"
+            class="codPostalItem"
+          >
+            <input
+              type="number"
+              class="input codPostalInput"
+              v-model="codPostal[index]"
+              required
+            />
+            <button
+              type="button"
+              class="btn btn-remove"
+              @click="removeCodPostal(index)"
+            >
+              X
+            </button>
+          </div>
+          <button type="button" class="btn btn-add" @click="addCodPostal">
+            Agregar Código Postal
+          </button>
+        </div>
       </div>
       <div class="button-container">
         <button :disabled="Incompleto" type="submit" class="btn btn-primary">
@@ -67,41 +174,6 @@
     </form>
   </div>
 </template>
-
-<script>
-import { defineComponent } from "vue";
-import { usaTiendasStore } from "@/components/stores/tiendaStore.js";
-
-export default defineComponent({
-  props: {
-    tienda: Object,
-  },
-  computed: {
-    Incompleto() {
-      return (
-        !this.tienda.codTienda ||
-        !this.tienda.nombre ||
-        !this.tienda.telefono ||
-        !this.tienda.codPostal ||
-        !this.tienda.codPostal ||
-        !/^\d{5}$/.test(this.tienda.codPostal)
-      );
-    },
-  },
-  data() {
-    return {
-      tiendasStore: usaTiendasStore(),
-    };
-  },
-  methods: {
-    updateTienda() {
-      const index = this.tiendasStore.buscarIndiceTienda(this.tienda.codTienda);
-      this.tiendasStore.actualizarTienda(index, this.tienda);
-      this.$emit("update");
-    },
-  },
-});
-</script>
 
 <style scoped>
 .container {
@@ -143,6 +215,17 @@ export default defineComponent({
   border-radius: 5px;
 }
 
+.codPostalContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.codPostalItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
 .btn {
   padding: 10px;
   font-size: 16px;
@@ -151,6 +234,15 @@ export default defineComponent({
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.btn-remove {
+  margin-left: 5px;
+  background-color: #ff0000;
+}
+
+.btn-add {
+  margin-top: 10px;
 }
 
 .btn:hover {
